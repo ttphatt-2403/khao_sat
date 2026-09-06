@@ -36,8 +36,8 @@ export const MatrixQuestionCard = ({ question, values, errors, onChange }: Props
       {/* Images */}
       <MediaRenderer images={question.images} />
 
-      {/* Matrix Table */}
-      <div className="overflow-x-auto custom-scrollbar pb-2">
+      {/* Matrix Table (Desktop) */}
+      <div className="hidden md:block overflow-x-auto custom-scrollbar pb-2">
         <table className="w-full text-sm text-left border-collapse min-w-[600px]">
           <thead className="bg-[#00369b]/5 text-[#00369b] font-bold border-b border-[#00369b]/10">
             <tr>
@@ -72,7 +72,6 @@ export const MatrixQuestionCard = ({ question, values, errors, onChange }: Props
                           onChange={() => onChange(rowKey, String(num))}
                           className="w-5 h-5 accent-[#ff914d] cursor-pointer"
                         />
-                        {/* Custom hover effect */}
                         <div className={`absolute inset-0 rounded-full opacity-0 pointer-events-none scale-150 transition-all duration-300 ${isSelected ? 'bg-[#ff914d]/20 opacity-100 scale-[1.7]' : 'bg-[#00369b]/10 group-hover:opacity-100'}`} />
                       </label>
                     </td>
@@ -82,6 +81,47 @@ export const MatrixQuestionCard = ({ question, values, errors, onChange }: Props
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Matrix Cards (Mobile) */}
+      <div className="md:hidden flex flex-col divide-y divide-slate-100">
+        {question.rows.map((row, idx) => {
+          const rowKey = `${question.id}_${row.id}`;
+          const error = errors[rowKey];
+          const isEven = idx % 2 === 0;
+
+          return (
+            <div key={row.id} className={`p-5 ${isEven ? 'bg-white' : 'bg-slate-50'} ${error ? 'bg-red-50/50' : ''}`}>
+              <div className="text-sm text-slate-700 font-medium mb-4 leading-relaxed">
+                {row.label}
+                {error && <p className="text-[11px] text-red-500 mt-1 font-normal">⚠ {error}</p>}
+              </div>
+              <div className="flex justify-between items-center gap-1 px-2">
+                {scaleArray.map((num) => {
+                  const isSelected = values[rowKey] === String(num);
+                  return (
+                    <label key={num} className="flex flex-col items-center gap-2 cursor-pointer group flex-1">
+                      <span className={`text-[13px] font-bold transition-colors ${isSelected ? 'text-[#ff914d]' : 'text-slate-400 group-hover:text-[#00369b]'}`}>
+                        {num}
+                      </span>
+                      <div className="relative flex items-center justify-center">
+                        <input
+                          type="radio"
+                          name={`mobile_${rowKey}`}
+                          value={String(num)}
+                          checked={isSelected}
+                          onChange={() => onChange(rowKey, String(num))}
+                          className="w-5 h-5 accent-[#ff914d] cursor-pointer relative z-10"
+                        />
+                        <div className={`absolute inset-0 rounded-full opacity-0 pointer-events-none scale-150 transition-all duration-300 ${isSelected ? 'bg-[#ff914d]/20 opacity-100 scale-[1.7]' : 'bg-[#00369b]/10 group-hover:opacity-100'}`} />
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
