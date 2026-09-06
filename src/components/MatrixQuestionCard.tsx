@@ -37,7 +37,7 @@ export const MatrixQuestionCard = ({ question, values, errors, onChange }: Props
       <MediaRenderer images={question.images} />
 
       {/* Matrix Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto custom-scrollbar pb-2">
         <table className="w-full text-sm text-left border-collapse min-w-[600px]">
           <thead className="bg-[#00369b]/5 text-[#00369b] font-bold border-b border-[#00369b]/10">
             <tr>

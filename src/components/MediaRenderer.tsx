@@ -14,7 +14,7 @@ export const MediaRenderer = ({ images }: Props) => {
           <img 
             src={img.url} 
             alt={img.caption || ""} 
-            className={`${img.layout === 'full' ? 'w-full h-auto' : 'max-h-64'} object-contain rounded-lg border border-slate-200 bg-white`} 
+            className={`${img.layout === 'full' ? 'w-full h-auto' : 'max-h-48 sm:max-h-64 max-w-full'} object-contain rounded-lg border border-slate-200 bg-white`} 
           />
           {img.caption && (
             <p className="text-sm text-slate-500 italic text-center max-w-md">

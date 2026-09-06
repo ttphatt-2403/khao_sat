@@ -38,11 +38,11 @@ export default function App() {
         <div className="absolute bottom-[-20%] right-[-30%] w-[150%] h-[80%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#ff914d]/40 via-[#e87a38]/10 to-transparent blur-3xl pointer-events-none animate-[spin_20s_linear_infinite_reverse] origin-center z-0"></div>
         
         {/* Giant Watermark Typography */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-[20%] -rotate-90 text-[180px] font-black tracking-tighter text-white/[0.03] select-none pointer-events-none z-0 mix-blend-overlay whitespace-nowrap">
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-[20%] -rotate-90 text-[100px] lg:text-[180px] font-black tracking-tighter text-white/[0.03] select-none pointer-events-none z-0 mix-blend-overlay whitespace-nowrap">
           SATIRE
         </div>
 
-        <div className="relative z-10 p-8 lg:p-12 xl:p-16 h-full flex flex-col justify-between">
+        <div className="relative z-10 p-6 sm:p-8 lg:p-12 xl:p-16 h-full flex flex-col justify-between">
           <div>
             <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#00c6ff] text-sm font-bold tracking-widest uppercase mb-6 shadow-[0_0_15px_rgba(0,198,255,0.3)]">
               Design Survey
@@ -59,16 +59,16 @@ export default function App() {
           </div>
 
           {/* Floating Glassmorphism Art Gallery */}
-          <div className="relative h-72 w-full mt-10 perspective-1000">
-            <div className="absolute top-0 left-0 w-32 h-32 lg:w-40 lg:h-40 p-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform -rotate-12 group-hover:-rotate-6 transition-transform duration-700 ease-out z-10 animate-[bounce_4s_infinite_alternate]">
+          <div className="relative h-48 sm:h-56 lg:h-72 w-full mt-8 lg:mt-10 perspective-1000">
+            <div className="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 p-1.5 lg:p-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform -rotate-12 group-hover:-rotate-6 transition-transform duration-700 ease-out z-10 animate-[bounce_4s_infinite_alternate]">
               <img src="/images/a1_img1.png" className="w-full h-full object-cover rounded-xl" alt="Art 1" />
             </div>
             
-            <div className="absolute top-8 left-[30%] w-40 h-40 lg:w-48 lg:h-48 p-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform rotate-6 group-hover:rotate-12 transition-transform duration-700 ease-out z-30 delay-100 animate-[bounce_5s_infinite_alternate]">
+            <div className="absolute top-6 left-[25%] sm:top-8 sm:left-[30%] w-28 h-28 sm:w-40 sm:h-40 lg:w-48 lg:h-48 p-1.5 lg:p-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform rotate-6 group-hover:rotate-12 transition-transform duration-700 ease-out z-30 delay-100 animate-[bounce_5s_infinite_alternate]">
               <img src="/images/a1_img2.png" className="w-full h-full object-cover rounded-xl border border-white/10" alt="Art 2" />
             </div>
             
-            <div className="absolute top-20 right-0 w-36 h-36 lg:w-44 lg:h-44 p-2 bg-[#ff914d]/10 backdrop-blur-xl rounded-2xl border border-[#ff914d]/40 shadow-[0_20px_50px_rgba(255,145,77,0.3)] transform rotate-12 group-hover:rotate-6 transition-transform duration-700 ease-out z-20 delay-200 animate-[bounce_6s_infinite_alternate]">
+            <div className="absolute top-16 right-0 sm:top-20 w-24 h-24 sm:w-36 sm:h-36 lg:w-44 lg:h-44 p-1.5 lg:p-2 bg-[#ff914d]/10 backdrop-blur-xl rounded-2xl border border-[#ff914d]/40 shadow-[0_20px_50px_rgba(255,145,77,0.3)] transform rotate-12 group-hover:rotate-6 transition-transform duration-700 ease-out z-20 delay-200 animate-[bounce_6s_infinite_alternate]">
               <img src="/images/a1_img3.png" className="w-full h-full object-cover rounded-xl" alt="Art 3" />
             </div>
           </div>
