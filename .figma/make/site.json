@@ -1,0 +1,10 @@
+{
+  "description": "Collect user feedback through a modern, responsive survey form featuring multiple-choice questions and seamless data submission for insights.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
