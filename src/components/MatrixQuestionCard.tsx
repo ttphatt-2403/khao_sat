@@ -26,7 +26,7 @@ export const MatrixQuestionCard = ({ question, values, errors, onChange }: Props
               {question.text}
             </h3>
             {question.description && (
-              <p className="text-blue-100 text-[13px] sm:text-sm mt-1.5 leading-relaxed whitespace-pre-wrap">
+              <p className="text-blue-200/90 text-[11.5px] sm:text-xs mt-1.5 leading-relaxed whitespace-pre-wrap italic">
                 {question.description}
               </p>
             )}</div>

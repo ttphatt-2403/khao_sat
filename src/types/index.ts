@@ -55,6 +55,7 @@ export interface MatrixQuestion extends BaseQuestion {
 export interface TextQuestion extends BaseQuestion {
   type: 'text';
   placeholder?: string;
+  requireConfirm?: boolean;
 }
 
 export interface InfoBlock extends BaseQuestion {

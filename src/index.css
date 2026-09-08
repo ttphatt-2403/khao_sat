@@ -3,6 +3,7 @@
 
 @theme {
   --font-sans: 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
   --color-navy: #00369b;
   --color-navy-dark: #00297a;
   --color-navy-light: #e8eef8;

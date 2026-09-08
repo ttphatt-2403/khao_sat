@@ -20,7 +20,7 @@ export const SubmitButton = ({ status }: SubmitButtonProps) => {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full py-4 rounded-xl font-bold text-sm sm:text-base text-white transition-all duration-300 relative overflow-hidden group border border-white/20"
+        className="w-full py-3.5 rounded-full font-bold text-sm sm:text-base text-white transition-all duration-300 relative overflow-hidden group border border-white/20"
         style={{
           background: status === "sending"
             ? "#7a9fd4"

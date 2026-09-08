@@ -5,10 +5,11 @@ interface Props {
   question: TextQuestion;
   value: string;
   error?: string;
+  isConfirmed?: boolean;
   onChange: (key: string, val: string) => void;
 }
 
-export const TextQuestionCard = ({ question, value, error, onChange }: Props) => {
+export const TextQuestionCard = ({ question, value, error, isConfirmed, onChange }: Props) => {
   return (
     <div id={`question-${question.id}`} className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_10px_40px_rgba(0,54,155,0.1)] border border-white overflow-hidden transition-all duration-300 hover:shadow-[0_15px_50px_rgba(0,54,155,0.15)]">
       {/* Header - Vibrant Blue */}
@@ -40,12 +41,42 @@ export const TextQuestionCard = ({ question, value, error, onChange }: Props) =>
           value={value || ""}
           onChange={(e) => onChange(question.id, e.target.value)}
           placeholder={question.placeholder || "Nhập câu trả lời của bạn..."}
-          className={`w-full min-h-[120px] p-4 text-sm border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#ff914d]/20 focus:border-[#ff914d] resize-y transition-all duration-300 shadow-inner bg-slate-50 hover:bg-white hover:border-[#00369b]/30 ${error ? 'border-red-400 bg-red-50' : 'border-[#e8eef8]'}`}
+          disabled={isConfirmed}
+          className={`w-full min-h-[120px] p-4 text-sm border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#ff914d]/20 focus:border-[#ff914d] resize-y transition-all duration-300 shadow-inner 
+            ${isConfirmed ? 'bg-slate-100 text-slate-500 cursor-not-allowed border-[#e8eef8]' : `bg-slate-50 hover:bg-white hover:border-[#00369b]/30 ${error ? 'border-red-400 bg-red-50' : 'border-[#e8eef8]'}`}
+          `}
         />
         {error && (
           <p className="text-xs mt-2 flex items-center gap-1 text-[#e53e3e]">
             <span>⚠</span> {error}
           </p>
+        )}
+
+        {question.requireConfirm && (
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={() => {
+                if (value?.trim()) {
+                  onChange(`${question.id}_confirmed`, "true");
+                } else {
+                  onChange(question.id, ""); // Trigger validation visually
+                }
+              }}
+              disabled={isConfirmed || !value?.trim()}
+              className={`px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
+                isConfirmed 
+                  ? 'bg-green-100 text-green-700 border-2 border-green-200 opacity-80' 
+                  : 'bg-[#00369b] text-white hover:bg-[#0050d0] shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed'
+              }`}
+            >
+              {isConfirmed ? (
+                <>✓ Đã xác nhận</>
+              ) : (
+                <>Xác nhận</>
+              )}
+            </button>
+          </div>
         )}
       </div>
     </div>

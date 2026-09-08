@@ -23,9 +23,27 @@ const getInitialState = (): FormData => {
       if (q.type === 'radio' && q.options.some(o => o.allowCustom)) {
         initial[`${q.id}_custom`] = "";
       }
+      if (q.type === 'text' && (q as any).requireConfirm) {
+        initial[`${q.id}_confirmed`] = "false";
+      }
     }
   });
   return initial;
+};
+
+export const getVisibleQuestions = (section: any, formData: FormData) => {
+  const currentQuestions = questions.filter(q => section.questionIds.includes(q.id));
+  const visible = [];
+  
+  for (const q of currentQuestions) {
+    visible.push(q);
+    if ((q as any).requireConfirm) {
+      if (formData[`${q.id}_confirmed`] !== 'true') {
+        break;
+      }
+    }
+  }
+  return visible;
 };
 
 export const useSurveyForm = () => {
@@ -42,7 +60,7 @@ export const useSurveyForm = () => {
   const validateStep = (stepIndex: number): boolean => {
     const newErrors: Record<string, string> = {};
     const currentSection = sections[stepIndex];
-    const currentQuestions = questions.filter(q => currentSection.questionIds.includes(q.id));
+    const currentQuestions = getVisibleQuestions(currentSection, formData);
     
     currentQuestions.forEach((q) => {
       if (q.type === 'info') return;
@@ -68,6 +86,8 @@ export const useSurveyForm = () => {
           newErrors[q.id] = "Vui lòng hoàn thành câu hỏi này.";
         } else if (q.type === 'radio' && formData[q.id] === 'other' && !formData[`${q.id}_custom`]) {
           newErrors[`${q.id}_custom`] = "Vui lòng nhập nội dung khác.";
+        } else if (q.type === 'text' && (q as any).requireConfirm && formData[`${q.id}_confirmed`] !== 'true') {
+          newErrors[q.id] = "Vui lòng bấm Xác nhận câu trả lời trước khi tiếp tục.";
         }
       }
     });
@@ -85,8 +105,12 @@ export const useSurveyForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (validateStep(currentStep)) {
+      if (currentStep === 0 && formData["scr_3"] === "never") {
+        await submitForm();
+        return;
+      }
       setCurrentStep(prev => Math.min(prev + 1, sections.length - 1));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -97,10 +121,7 @@ export const useSurveyForm = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateStep(currentStep)) return;
-
+  const submitForm = async () => {
     setStatus("sending");
 
     const params = new URLSearchParams();
@@ -141,6 +162,12 @@ export const useSurveyForm = () => {
     } catch {
       setStatus("error");
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateStep(currentStep)) return;
+    await submitForm();
   };
 
   const handleReset = () => {

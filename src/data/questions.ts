@@ -35,7 +35,7 @@ export const sections: SurveySection[] = [
   {
     id: "part_6",
     title: "Phần 6: Phản ứng với Hình thức Trào phúng thị giác",
-    questionIds: ["info_p6", "p6_1", "p6_2", "p6_3", "p6_4", "p6_5", "info_p6_msg", "p6_6", "p6_7", "p6_8", "p6_9", "p6_10"]
+    questionIds: ["info_p6", "p6_1", "p6_2", "info_p6_q3", "p6_3", "p6_4", "p6_5", "info_p6_msg", "p6_6", "p6_7", "p6_8", "p6_9", "p6_10"]
   }
 ];
 
@@ -59,7 +59,7 @@ export const questions: Question[] = [
     text: "Bạn hiện đang sinh sống tại đâu?",
     options: [
       { value: "hcm", label: "Thành phố Hồ Chí Minh" },
-      { value: "other", label: "Tỉnh/Thành phố khác" },
+      { value: "other", label: "Tỉnh/Thành phố khác", allowCustom: true },
     ],
   },
   {
@@ -82,7 +82,7 @@ export const questions: Question[] = [
     options: [
       { value: "male", label: "Nam" },
       { value: "female", label: "Nữ" },
-      { value: "other", label: "Khác…", allowCustom: true },
+      { value: "other", label: "Khác…" },
     ],
   },
   {
@@ -217,7 +217,7 @@ export const questions: Question[] = [
     id: "p4_1",
     type: "matrix",
     number: "1",
-    text: "Thái độ (ATT)",
+    text: "Thái độ",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về việc cân nhắc trước khi quyết định chi tiêu bằng BNPL.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -231,7 +231,7 @@ export const questions: Question[] = [
     id: "p4_2",
     type: "matrix",
     number: "2",
-    text: "Nhận thức kiểm soát hành vi (PBC)",
+    text: "Nhận thức kiểm soát hành vi",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về khả năng kiểm soát việc cân nhắc trước khi quyết định chi tiêu bằng BNPL.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -245,7 +245,7 @@ export const questions: Question[] = [
     id: "p4_3",
     type: "matrix",
     number: "3",
-    text: "Chuẩn mực chủ quan (SN)",
+    text: "Chuẩn mực chủ quan",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về sự ảnh hưởng và kỳ vọng của những người xung quanh đối với việc cân nhắc trước khi quyết định chi tiêu bằng BNPL.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -260,7 +260,7 @@ export const questions: Question[] = [
     id: "p4_4",
     type: "matrix",
     number: "4",
-    text: "Ý định hành vi (INT)",
+    text: "Ý định hành vi",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về ý định cân nhắc trước khi quyết định chi tiêu bằng BNPL trong những lần mua sắm tiếp theo.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -274,7 +274,7 @@ export const questions: Question[] = [
     id: "p4_5",
     type: "matrix",
     number: "5",
-    text: "Nỗi đau khi thanh toán (PoP)",
+    text: "Nỗi đau khi thanh toán",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về cảm nhận của bạn khi thanh toán cho các khoản mua sắm bằng BNPL.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -433,18 +433,20 @@ export const questions: Question[] = [
     type: "info",
     text: "",
     description: "Vui lòng xem nội dung/ấn phẩm được cung cấp trước khi trả lời các câu hỏi dưới đây.",
+  },
+  {
+    id: "info_p6_q3",
+    type: "info",
+    text: "",
     images: [
-      { url: "/images/a2_img1.png" },
-      { url: "/images/a1_img3.png" },
-      { url: "/images/a1_img1.png" },
-      { url: "/images/a1_img2.png" }
+      { url: "/images/cau3_phan6.png", layout: "full" }
     ]
   },
   {
     id: "p6_3",
     type: "matrix",
     number: "3",
-    text: "Đánh giá nội dung",
+    text: "",
     description: "Bạn đánh giá nội dung trên như thế nào?",
     scaleStart: 1,
     scaleEnd: 7,
@@ -459,7 +461,7 @@ export const questions: Question[] = [
     id: "p6_4",
     type: "matrix",
     number: "4",
-    text: "Mức độ đồng ý",
+    text: "",
     description: "Sau khi xem nội dung trên, bạn hãy cho biết mức độ đồng ý với các phát biểu sau.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
     scaleEnd: 7,
@@ -474,6 +476,7 @@ export const questions: Question[] = [
     number: "5",
     text: "Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?",
     placeholder: "Câu trả lời mở...",
+    requireConfirm: true,
   },
   {
     id: "info_p6_msg",

@@ -52,6 +52,7 @@ export const QuestionRenderer = ({ question, formData, errors, onChange }: Props
           question={question}
           value={formData[question.id]}
           error={errors[question.id]}
+          isConfirmed={formData[`${question.id}_confirmed`] === 'true'}
           onChange={onChange}
         />
       );
