@@ -1,4 +1,4 @@
-export type QuestionType = 'radio' | 'matrix' | 'text' | 'info';
+export type QuestionType = 'radio' | 'checkbox' | 'matrix' | 'text' | 'info';
 
 export interface MediaAsset {
   url: string;
@@ -26,6 +26,18 @@ export interface RadioQuestion extends BaseQuestion {
   options: RadioOption[];
 }
 
+export interface CheckboxOption {
+  value: string;
+  label: string;
+  allowCustom?: boolean;
+}
+
+export interface CheckboxQuestion extends BaseQuestion {
+  type: 'checkbox';
+  options: CheckboxOption[];
+  maxSelect?: number;
+}
+
 export interface MatrixRow {
   id: string; 
   label: string; 
@@ -49,7 +61,7 @@ export interface InfoBlock extends BaseQuestion {
   type: 'info';
 }
 
-export type Question = RadioQuestion | MatrixQuestion | TextQuestion | InfoBlock;
+export type Question = RadioQuestion | CheckboxQuestion | MatrixQuestion | TextQuestion | InfoBlock;
 
 export interface SurveySection {
   id: string;
@@ -58,5 +70,5 @@ export interface SurveySection {
   questionIds: string[];
 }
 
-export type FormData = Record<string, string>;
+export type FormData = Record<string, string | string[]>;
 export type SubmitStatus = "idle" | "sending" | "success" | "error";

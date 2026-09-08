@@ -1,5 +1,6 @@
-import { Question } from "../types";
+import { Question, FormData } from "../types";
 import { RadioQuestionCard } from "./RadioQuestionCard";
+import { CheckboxQuestionCard } from "./CheckboxQuestionCard";
 import { MatrixQuestionCard } from "./MatrixQuestionCard";
 import { TextQuestionCard } from "./TextQuestionCard";
 import { InfoCard } from "./InfoCard";
@@ -24,6 +25,18 @@ export const QuestionRenderer = ({ question, formData, errors, onChange }: Props
           onChange={onChange}
         />
       );
+      case "checkbox":
+        return (
+          <CheckboxQuestionCard
+            question={question}
+            value={(formData[question.id] as unknown as string[]) || []}
+            customValue={formData[`${question.id}_custom`] as string}
+            error={errors[question.id]}
+            customError={errors[`${question.id}_custom`]}
+            onChange={onChange}
+            onCustomChange={(val) => onChange(`${question.id}_custom`, val)}
+          />
+        );
     case "matrix":
       return (
         <MatrixQuestionCard
