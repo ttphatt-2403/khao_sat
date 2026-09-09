@@ -6,7 +6,7 @@ interface Props {
   onLoginSuccess: (email: string, name: string) => void;
 }
 
-const CONFIRM_PHRASE = "Tôi đồng ý tham gia khảo sát và cho phép sử dụng dữ liệu khảo sát cho mục đích nghiên cứu trong thời gian 04 tháng.";
+const CONFIRM_PHRASE = "Tôi đồng ý tham gia khảo sát và cho phép sử dụng dữ liệu khảo sát cho mục đích nghiên cứu trong thời gian 06 tháng.";
 
 export const LoginScreen = ({ onLoginSuccess }: Props) => {
   const [consentInput, setConsentInput] = useState("");
@@ -105,8 +105,8 @@ export const LoginScreen = ({ onLoginSuccess }: Props) => {
               <p className="font-semibold text-slate-700">XÁC NHẬN THAM GIA KHẢO SÁT</p>
               <p>Trước khi bắt đầu khảo sát, vui lòng đọc kỹ thông tin dưới đây:</p>
               <p>Tôi xác nhận rằng tôi đã đọc và hiểu thông tin giới thiệu về khảo sát. Tôi tự nguyện tham gia khảo sát và đồng ý cung cấp các câu trả lời của mình cho nhóm thực hiện để phục vụ mục đích nghiên cứu và thực hiện đồ án tốt nghiệp.</p>
-              <p>Tôi đồng ý cho nhóm thực hiện thu thập, sử dụng và xử lý các dữ liệu được cung cấp trong khảo sát trong phạm vi mục đích nghiên cứu đã nêu. Các dữ liệu khảo sát sẽ được bảo mật, không sử dụng cho mục đích thương mại và chỉ phục vụ cho quá trình nghiên cứu, thực hiện và hoàn thiện đồ án trong thời gian <strong>04 tháng</strong>.</p>
-              <p>Sau thời hạn 04 tháng, dữ liệu khảo sát sẽ được xóa bỏ và không tiếp tục được sử dụng cho mục đích của khảo sát hoặc đồ án.</p>
+              <p>Tôi đồng ý cho nhóm thực hiện thu thập, sử dụng và xử lý các dữ liệu được cung cấp trong khảo sát trong phạm vi mục đích nghiên cứu đã nêu. Các dữ liệu khảo sát sẽ được bảo mật, không sử dụng cho mục đích thương mại và chỉ phục vụ cho quá trình nghiên cứu, thực hiện và hoàn thiện đồ án trong thời gian <strong>06 tháng</strong>.</p>
+              <p>Sau thời hạn 06 tháng, dữ liệu khảo sát sẽ được xóa bỏ và không tiếp tục được sử dụng cho mục đích của khảo sát hoặc đồ án.</p>
             </div>
 
             {/* Copyable Phrase */}

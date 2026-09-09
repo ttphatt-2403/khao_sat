@@ -78,7 +78,7 @@ export default function App() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#00c6ff]/40 text-[#00c6ff] text-sm font-bold tracking-widest uppercase mb-6 shadow-[0_0_15px_rgba(0,198,255,0.15)]">
               <span>✧</span> DESIGN SURVEY
             </div>
-            <h1 className="font-heading text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold mb-4 tracking-tight leading-tight">
+            <h1 className="font-heading text-xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold mb-4 tracking-tight leading-tight">
               Chiến dịch truyền thông nâng cao nhận thức về{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff914d] via-[#ff5e00] to-[#ff914d] animate-pulse">
                 quyết định chi tiêu có cân nhắc khi sử dụng dịch vụ Mua trước - Trả sau (BNPL) trong Gen Z tại Thành phố Hồ Chí Minh
