@@ -229,7 +229,7 @@ export const useSurveyForm = (userEmail: string | null) => {
   const handleReset = () => {
     localStorage.removeItem('survey_formData');
     localStorage.removeItem('survey_currentStep');
-    const initial = {};
+    const initial: Record<string, string | string[]> = {};
     questions.forEach((q) => {
       if (q.type === 'info') return;
       if (q.type === 'matrix') {

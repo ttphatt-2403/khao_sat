@@ -60,6 +60,7 @@ export interface TextQuestion extends BaseQuestion {
 
 export interface InfoBlock extends BaseQuestion {
   type: 'info';
+  dependencies?: string[];
 }
 
 export type Question = RadioQuestion | CheckboxQuestion | MatrixQuestion | TextQuestion | InfoBlock;

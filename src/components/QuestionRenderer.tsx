@@ -8,9 +8,9 @@ import { InfoCard } from "./InfoCard";
 
 interface Props {
   question: Question;
-  formData: Record<string, string>;
+  formData: FormData;
   errors: Record<string, string>;
-  onChange: (key: string, val: string) => void;
+  onChange: (key: string, val: any) => void;
 }
 
 export const QuestionRenderer = React.memo(({ question, formData, errors, onChange }: Props) => {
@@ -30,7 +30,7 @@ export const QuestionRenderer = React.memo(({ question, formData, errors, onChan
       return (
         <CheckboxQuestionCard
           question={question}
-          value={(formData[question.id] as unknown as string[]) || []}
+          value={(formData[question.id] as string[]) || []}
           customValue={formData[`${question.id}_custom`] as string}
           error={errors[question.id]}
           customError={errors[`${question.id}_custom`]}
@@ -42,7 +42,7 @@ export const QuestionRenderer = React.memo(({ question, formData, errors, onChan
       return (
         <MatrixQuestionCard
           question={question}
-          values={formData}
+          values={formData as Record<string, string>}
           errors={errors}
           onChange={onChange}
         />
