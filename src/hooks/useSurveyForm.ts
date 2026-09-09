@@ -123,10 +123,17 @@ export const useSurveyForm = (userEmail: string | null) => {
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length > 0) {
-      const firstErrorKey = Object.keys(newErrors)[0];
-      const element = document.getElementById(`question-${firstErrorKey.split('_')[0]}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const errorKey = Object.keys(newErrors)[0];
+      const q = currentQuestions.find(q => errorKey === q.id || errorKey.startsWith(`${q.id}_`));
+      
+      if (q) {
+        // Use setTimeout to ensure DOM has updated with error borders if needed
+        setTimeout(() => {
+          const element = document.getElementById(`question-${q.id}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 50);
       }
     }
 
