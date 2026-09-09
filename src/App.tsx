@@ -1,14 +1,19 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import SurveyPage from "./pages/SurveyPage";
 import { Dashboard } from "./pages/Dashboard";
 
 export default function App() {
-  return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<SurveyPage />} />
-        <Route path="/mo-ni-dashboard-123" element={<Dashboard />} />
-      </Routes>
-    </HashRouter>
-  );
+  const [hash, setHash] = useState(window.location.hash);
+
+  useEffect(() => {
+    const onHashChange = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  if (hash === "#/mo-ni-dashboard-123") {
+    return <Dashboard />;
+  }
+
+  return <SurveyPage />;
 }
