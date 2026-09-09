@@ -25,13 +25,6 @@ export default function App() {
     handleReset,
   } = useSurveyForm(userEmail);
 
-  if (!userEmail) {
-    return <LoginScreen onLoginSuccess={(email, name) => {
-      setUserEmail(email);
-      setUserName(name);
-    }} />;
-  }
-
   // Scroll to top when step changes
   useEffect(() => {
     // Scroll the window (for mobile layout)
@@ -41,6 +34,13 @@ export default function App() {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [currentStep]);
+
+  if (!userEmail) {
+    return <LoginScreen onLoginSuccess={(email, name) => {
+      setUserEmail(email);
+      setUserName(name);
+    }} />;
+  }
 
   const currentSection = sections[currentStep];
   const activeQuestions = getVisibleQuestions(currentSection, formData);
