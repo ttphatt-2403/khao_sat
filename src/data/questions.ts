@@ -3,7 +3,7 @@ import { Question, SurveySection } from "../types";
 export const sections: SurveySection[] = [
   {
     id: "screener",
-    title: "Sàng lọc (Screener)",
+    title: "Thông tin cơ bản",
     questionIds: ["scr_1", "scr_2", "scr_3"]
   },
   {
@@ -18,12 +18,12 @@ export const sections: SurveySection[] = [
   },
   {
     id: "part_3",
-    title: "Phần 3: Nhận thức và Trải nghiệm",
+    title: "Phần 3: Nhận thức và trải nghiệm khi sử dụng BNPL",
     questionIds: ["p3_1"]
   },
   {
     id: "part_4",
-    title: "Phần 4: Yếu tố ảnh hưởng",
+    title: "Phần 4: Yếu tố ảnh hưởng đến ý định chi tiêu có cân nhắc khi sử dụng BNPL",
     description: "Những yếu tố ảnh hưởng đến ý định trong việc đưa ra quyết định chi tiêu có cân nhắc khi sử dụng BNPL",
     questionIds: ["p4_1", "p4_2", "p4_3", "p4_4", "p4_5"]
   },
@@ -94,6 +94,7 @@ export const questions: Question[] = [
       { value: "hs", label: "Học sinh" },
       { value: "sv_chua", label: "Sinh viên chưa đi làm" },
       { value: "sv_roi", label: "Sinh viên đã đi làm" },
+      { value: "di_lam", label: "Đã đi làm" },
     ],
   },
   {
@@ -260,20 +261,6 @@ export const questions: Question[] = [
     id: "p4_4",
     type: "matrix",
     number: "4",
-    text: "Ý định hành vi",
-    description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về ý định cân nhắc trước khi quyết định chi tiêu bằng BNPL trong những lần mua sắm tiếp theo.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
-    scaleStart: 1,
-    scaleEnd: 7,
-    rows: [
-      { id: "INT1", label: "Trong những lần mua sắm tiếp theo, tôi có ý định cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL." },
-      { id: "INT2", label: "Trong những lần sử dụng BNPL tiếp theo, tôi dự định kiểm tra tổng chi phí, khả năng chi trả và nghĩa vụ thanh toán trước khi quyết định mua." },
-      { id: "INT3", label: "Trong tương lai, tôi có ý định chủ động cân nhắc các yếu tố liên quan trước khi quyết định chi tiêu bằng BNPL." },
-    ],
-  },
-  {
-    id: "p4_5",
-    type: "matrix",
-    number: "5",
     text: "Nỗi đau khi thanh toán",
     description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về cảm nhận của bạn khi thanh toán cho các khoản mua sắm bằng BNPL.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
     scaleStart: 1,
@@ -282,6 +269,20 @@ export const questions: Question[] = [
       { id: "POP1", label: "Tôi cảm thấy khó chịu khi phải thanh toán cho một khoản mua sắm mà tôi đã thực hiện bằng BNPL." },
       { id: "POP2", label: "Tôi cảm nhận rõ sự mất mát về tiền bạc khi phải thanh toán cho khoản mua sắm bằng BNPL." },
       { id: "POP3", label: "Tôi cảm thấy khó chịu khi đến thời điểm phải thanh toán khoản mua sắm đã thực hiện bằng BNPL." },
+    ],
+  },
+  {
+    id: "p4_5",
+    type: "matrix",
+    number: "5",
+    text: "Ý định hành vi",
+    description: "Bạn hãy cho biết mức độ đồng ý của bạn với các phát biểu dưới đây về ý định cân nhắc trước khi quyết định chi tiêu bằng BNPL trong những lần mua sắm tiếp theo.\n1 = Hoàn toàn không đồng ý | 7 = Hoàn toàn đồng ý",
+    scaleStart: 1,
+    scaleEnd: 7,
+    rows: [
+      { id: "INT1", label: "Trong những lần mua sắm tiếp theo, tôi có ý định cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL." },
+      { id: "INT2", label: "Trong những lần sử dụng BNPL tiếp theo, tôi dự định kiểm tra tổng chi phí, khả năng chi trả và nghĩa vụ thanh toán trước khi quyết định mua." },
+      { id: "INT3", label: "Trong tương lai, tôi có ý định chủ động cân nhắc các yếu tố liên quan trước khi quyết định chi tiêu bằng BNPL." },
     ],
   },
 
@@ -481,6 +482,7 @@ export const questions: Question[] = [
     type: "text",
     number: "5",
     text: "Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?",
+    description: "*(Lưu ý xíu xiu: Một khi bấm xác nhận rồi là không quay lại sửa được nữa đâu nha, nên bạn cứ viết hết suy nghĩ của mình ra rồi hẵng chốt nhé!)*",
     placeholder: "Câu trả lời mở...",
     requireConfirm: true,
   },

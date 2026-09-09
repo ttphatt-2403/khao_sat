@@ -6,11 +6,12 @@ import { SubmitButton } from "./components/SubmitButton";
 import { Footer } from "./components/Footer";
 import { questions, sections } from "./data/questions";
 import { LoginScreen } from "./components/LoginScreen";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const {
     formData,
@@ -30,6 +31,16 @@ export default function App() {
       setUserName(name);
     }} />;
   }
+
+  // Scroll to top when step changes
+  useEffect(() => {
+    // Scroll the window (for mobile layout)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll the right panel container (for desktop layout)
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [currentStep]);
 
   const currentSection = sections[currentStep];
   const activeQuestions = getVisibleQuestions(currentSection, formData);
@@ -103,7 +114,7 @@ export default function App() {
       </div>
 
       {/* RIGHT PANEL - Scrolling Form */}
-      <div className="lg:w-[65%] xl:w-[70%] p-4 py-8 lg:p-12 w-full relative z-10 lg:h-screen lg:overflow-y-auto custom-scrollbar -mt-8 sm:-mt-12 lg:mt-0">
+      <div ref={scrollContainerRef} className="lg:w-[65%] xl:w-[70%] p-4 py-8 lg:p-12 w-full relative z-10 lg:h-screen lg:overflow-y-auto custom-scrollbar -mt-8 sm:-mt-12 lg:mt-0">
         <div className="max-w-3xl mx-auto space-y-6">
 
           {status === "success" ? (
