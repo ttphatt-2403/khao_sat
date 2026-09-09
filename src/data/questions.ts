@@ -35,7 +35,7 @@ export const sections: SurveySection[] = [
   {
     id: "part_6",
     title: "Phần 6: Phản ứng với Hình thức Trào phúng thị giác",
-    questionIds: ["info_p6", "p6_1", "p6_2", "info_p6_q3", "p6_3", "p6_4", "p6_5", "info_p6_msg", "p6_6", "p6_7", "p6_8", "p6_9", "p6_10"]
+    questionIds: ["info_p6", "p6_1", "p6_2", "info_p6_def", "info_p6_q3", "p6_3", "p6_4", "p6_5", "info_p6_msg", "p6_6", "p6_7", "p6_8", "p6_9", "p6_10"]
   }
 ];
 
@@ -427,6 +427,12 @@ export const questions: Question[] = [
       { value: "thongtin", label: "Nội dung hình ảnh sử dụng hình ảnh để cung cấp thông tin về một vấn đề." },
       { value: "other", label: "Khác", allowCustom: true },
     ],
+  },
+  {
+    id: "info_p6_def",
+    type: "info",
+    text: "💡 Vậy \u201cTrào Phúng Thị Giác\u201d là gì nhỉ?",
+    description: "Trào phúng thị giác là cách sử dụng hình ảnh, nhân vật, tình huống, chữ viết hoặc các yếu tố thị giác kết hợp với sự hài hước, châm biếm, mỉa mai hoặc cường điệu để thể hiện một góc nhìn, bình luận hoặc phê phán về một vấn đề trong cuộc sống.\n\nNói đơn giản hơn — thay vì nói một vấn đề theo cách nghiêm túc, trào phúng thị giác \u201cnói bằng sự hài hước\u201d để người xem vừa thấy thú vị, vừa nhận ra thông điệp hoặc vấn đề được đề cập.",
   },
   {
     id: "info_p6",

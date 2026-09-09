@@ -5,8 +5,13 @@ import { SuccessState } from "./components/SuccessState";
 import { SubmitButton } from "./components/SubmitButton";
 import { Footer } from "./components/Footer";
 import { questions, sections } from "./data/questions";
+import { LoginScreen } from "./components/LoginScreen";
+import { useState } from "react";
 
 export default function App() {
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+
   const {
     formData,
     status,
@@ -17,7 +22,14 @@ export default function App() {
     prevStep,
     handleSubmit,
     handleReset,
-  } = useSurveyForm();
+  } = useSurveyForm(userEmail);
+
+  if (!userEmail) {
+    return <LoginScreen onLoginSuccess={(email, name) => {
+      setUserEmail(email);
+      setUserName(name);
+    }} />;
+  }
 
   const currentSection = sections[currentStep];
   const activeQuestions = getVisibleQuestions(currentSection, formData);

@@ -46,7 +46,7 @@ export const getVisibleQuestions = (section: any, formData: FormData) => {
   return visible;
 };
 
-export const useSurveyForm = () => {
+export const useSurveyForm = (userEmail: string | null) => {
   const [formData, setFormData] = useState<FormData>(getInitialState());
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -125,6 +125,10 @@ export const useSurveyForm = () => {
     setStatus("sending");
 
     const params = new URLSearchParams();
+    
+    if (userEmail) {
+      params.append("email", userEmail);
+    }
     
     Object.entries(formData).forEach(([key, value]) => {
       if (key.endsWith('_custom')) return; 
