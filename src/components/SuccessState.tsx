@@ -1,8 +1,9 @@
 interface SuccessStateProps {
   onReset: () => void;
+  isNeverBNPL?: boolean;
 }
 
-export const SuccessState = ({ onReset }: SuccessStateProps) => {
+export const SuccessState = ({ onReset, isNeverBNPL = false }: SuccessStateProps) => {
   return (
     <div className="relative w-full max-w-3xl mx-auto flex flex-col items-center justify-center px-4 py-10 mt-10">
       
@@ -35,15 +36,25 @@ export const SuccessState = ({ onReset }: SuccessStateProps) => {
 
         {/* Title */}
         <h2 className="text-2xl md:text-[28px] font-bold mb-6 text-[#004de6] font-['Space_Grotesk'] tracking-tight">
-          YAY! Bạn hoàn thành rồi! 🎉💙
+          {isNeverBNPL ? "YÀ HÚ! Bạn hoàn thành rồi! 🎉💙" : "YAY! Bạn hoàn thành rồi! 🎉💙"}
         </h2>
         
         {/* Text body */}
-        <div className="text-slate-500 mb-10 max-w-[500px] mx-auto space-y-5 leading-relaxed text-[15px]">
-          <p>Cảm ơn bạn rất nhiều vì đã dành thời gian chia sẻ những suy nghĩ, trải nghiệm và thói quen của mình cùng Mơ Nì.</p>
-          <p>Mỗi câu trả lời của bạn đều là một mảnh ghép nhỏ giúp tụi mình hiểu hơn về Gen Z và hoàn thiện đồ án tốt nghiệp này.</p>
-          <p className="font-bold text-[#004de6] pt-2 text-base">Cảm ơn bạn đã giúp Mơ Nì đi thêm một bước trên hành trình này nhé! ♡</p>
-        </div>
+        {isNeverBNPL ? (
+          <div className="text-slate-500 mb-10 max-w-[500px] mx-auto space-y-5 leading-relaxed text-[15px]">
+            <p>Cảm ơn bạn rất nhiều vì đã dành thời gian chia sẻ cùng Mơ Nì nha!</p>
+            <p>Vì bạn chưa từng sử dụng dịch vụ Mua trước - Trả sau (BNPL) nên khảo sát của tụi mình sẽ dừng tại đây để tập trung vào những người đã có trải nghiệm với dịch vụ này.</p>
+            <p>Tuy vậy, câu trả lời của bạn vẫn là một mảnh ghép nhỏ và rất đáng quý trong quá trình tìm hiểu về thói quen và hành vi chi tiêu của Gen Z. 🫶</p>
+            <p>Cảm ơn bạn đã ghé qua và dành một chút thời gian đồng hành cùng Mơ Nì!</p>
+            <p className="font-bold text-[#004de6] pt-2 text-base">Chúc bạn luôn tính tới, tính lui và tính cả túi trước mỗi quyết định chi tiêu nha! 💙✨</p>
+          </div>
+        ) : (
+          <div className="text-slate-500 mb-10 max-w-[500px] mx-auto space-y-5 leading-relaxed text-[15px]">
+            <p>Cảm ơn bạn rất nhiều vì đã dành thời gian chia sẻ những suy nghĩ, trải nghiệm và thói quen của mình cùng Mơ Nì.</p>
+            <p>Mỗi câu trả lời của bạn đều là một mảnh ghép nhỏ giúp tụi mình hiểu hơn về Gen Z và hoàn thiện đồ án tốt nghiệp này.</p>
+            <p className="font-bold text-[#004de6] pt-2 text-base">Cảm ơn bạn đã giúp Mơ Nì đi thêm một bước trên hành trình này nhé! ♡</p>
+          </div>
+        )}
         
         {/* Button */}
         <button

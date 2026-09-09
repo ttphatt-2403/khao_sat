@@ -107,7 +107,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto space-y-6">
 
           {status === "success" ? (
-            <SuccessState onReset={handleReset} />
+            <SuccessState onReset={handleReset} isNeverBNPL={formData["scr_3"] === "never"} />
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); if (currentStep === sections.length - 1) handleSubmit(e); }} noValidate className="space-y-6">
 
