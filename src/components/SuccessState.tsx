@@ -66,10 +66,6 @@ export const SuccessState = ({ onReset, isNeverBNPL = false }: SuccessStateProps
         </button>
       </div>
 
-      {/* Footer Text directly below the card */}
-      <p className="text-[#a0b3cc] text-xs mt-6 z-10 font-medium">
-        © 2026 • Khảo sát được bảo mật bởi HTT79
-      </p>
 
       {/* Floating Paper Airplane & Trail */}
       <div className="absolute -bottom-10 -right-4 md:-right-20 md:-bottom-10 w-64 h-64 pointer-events-none opacity-80 z-0 hidden sm:block">
