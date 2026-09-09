@@ -64,7 +64,7 @@ export const LoginScreen = ({ onLoginSuccess }: Props) => {
           </h1>
           
           {/* Text Content */}
-          <div className="text-slate-700 text-[14px] leading-[1.65] space-y-5 text-left mb-8">
+          <div className="text-slate-700 text-[14px] leading-[1.65] space-y-5 text-justify mb-8">
             <p>
               Tụi mình đang thực hiện một khảo sát nhỏ trong khuôn khổ đồ án tốt nghiệp, để tìm hiểu thêm về cách Gen Z sử dụng và trải nghiệm dịch vụ <strong>Mua trước - Trả sau (BNPL)</strong>, cũng như thói quen tiếp nhận các nội dung truyền thông và cảm nhận của bạn về những hình thức truyền thông mang màu sắc trào phúng, hài hước.
             </p>
@@ -101,7 +101,7 @@ export const LoginScreen = ({ onLoginSuccess }: Props) => {
             </div>
 
             {/* Consent Text Box */}
-            <div className="bg-[#f8faff] border border-[#dce7f8] rounded-xl p-4 text-[13px] text-slate-600 leading-relaxed mb-4 space-y-3">
+            <div className="bg-[#f8faff] border border-[#dce7f8] rounded-xl p-4 text-[13px] text-slate-600 leading-relaxed mb-4 space-y-3 text-justify">
               <p className="font-semibold text-slate-700">XÁC NHẬN THAM GIA KHẢO SÁT</p>
               <p>Trước khi bắt đầu khảo sát, vui lòng đọc kỹ thông tin dưới đây:</p>
               <p>Tôi xác nhận rằng tôi đã đọc và hiểu thông tin giới thiệu về khảo sát. Tôi tự nguyện tham gia khảo sát và đồng ý cung cấp các câu trả lời của mình cho nhóm thực hiện để phục vụ mục đích nghiên cứu và thực hiện đồ án tốt nghiệp.</p>
@@ -160,23 +160,36 @@ export const LoginScreen = ({ onLoginSuccess }: Props) => {
             }`}>
               <p className="text-[11px] text-slate-500 mb-4 font-semibold uppercase tracking-widest">Bắt đầu khảo sát bằng cách</p>
               <div className="w-full flex justify-center hover:scale-[1.02] transition-transform">
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    if (credentialResponse.credential) {
-                      const decoded: any = jwtDecode(credentialResponse.credential);
-                      onLoginSuccess(decoded.email, decoded.name);
-                    }
-                  }}
-                  onError={() => {
-                    console.log('Login Failed');
-                    alert("Đăng nhập thất bại. Vui lòng thử lại!");
-                  }}
-                  useOneTap
-                  theme="filled_blue"
-                  text="continue_with"
-                  shape="rectangular"
-                  width="280"
-                />
+                {isConfirmed ? (
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      if (credentialResponse.credential) {
+                        const decoded: any = jwtDecode(credentialResponse.credential);
+                        
+                        // Check if already completed
+                        if (localStorage.getItem(`survey_completed_${decoded.email}`) === 'true') {
+                          alert("Bạn đã hoàn thành form rồi nhé. Cảm ơn bạn!");
+                          return;
+                        }
+                        
+                        onLoginSuccess(decoded.email, decoded.name);
+                      }
+                    }}
+                    onError={() => {
+                      console.log('Login Failed');
+                      alert("Đăng nhập thất bại. Vui lòng thử lại!");
+                    }}
+                    useOneTap
+                    theme="filled_blue"
+                    text="continue_with"
+                    shape="rectangular"
+                    width="280"
+                  />
+                ) : (
+                  <div className="w-[280px] h-[40px] bg-slate-100 rounded-[4px] border border-slate-200 flex items-center justify-center text-slate-400 text-[13px] font-medium cursor-not-allowed">
+                    Đăng nhập bằng Google
+                  </div>
+                )}
               </div>
             </div>
             <p className="text-[11px] mt-5 font-medium text-center" style={{color: '#b0bdd4'}}>

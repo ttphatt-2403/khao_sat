@@ -190,6 +190,9 @@ export const useSurveyForm = (userEmail: string | null) => {
         body: params,
         mode: "no-cors",
       });
+      if (userEmail) {
+        localStorage.setItem(`survey_completed_${userEmail}`, 'true');
+      }
       setStatus("success");
     } catch {
       setStatus("error");

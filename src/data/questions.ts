@@ -266,7 +266,7 @@ export const questions: Question[] = [
     scaleStart: 1,
     scaleEnd: 7,
     rows: [
-      { id: "POP1", label: "Tôi cảm thấy khó chịu khi phải thanh toán cho một khoản mua sắm mà tôi đã thực hiện bằng BNPL." },
+      { id: "POP1", label: "Tôi cảm thấy không thoải mái khi sử dụng BNPL để thực hiện một khoản mua sắm. " },
       { id: "POP2", label: "Tôi cảm nhận rõ sự mất mát về tiền bạc khi phải thanh toán cho khoản mua sắm bằng BNPL." },
       { id: "POP3", label: "Tôi cảm thấy khó chịu khi đến thời điểm phải thanh toán khoản mua sắm đã thực hiện bằng BNPL." },
     ],
