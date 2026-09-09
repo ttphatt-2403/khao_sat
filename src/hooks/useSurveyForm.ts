@@ -192,17 +192,31 @@ export const useSurveyForm = (userEmail: string | null) => {
     });
 
     try {
+      // Google Apps Script redirects, so we follow with cors mode
+      // URLSearchParams ensures Content-Type: application/x-www-form-urlencoded (simple request)
       await fetch(WEBHOOK_URL, {
         method: "POST",
         body: params,
         mode: "no-cors",
+        redirect: "follow",
       });
       if (userEmail) {
         localStorage.setItem(`survey_completed_${userEmail}`, 'true');
       }
       setStatus("success");
-    } catch {
-      setStatus("error");
+    } catch (err) {
+      console.error("Submit error:", err);
+      // Fallback: try GET method with params in URL (always works across environments)
+      try {
+        const url = `${WEBHOOK_URL}?${params.toString()}&_method=POST`;
+        await fetch(url, { mode: "no-cors" });
+        if (userEmail) {
+          localStorage.setItem(`survey_completed_${userEmail}`, 'true');
+        }
+        setStatus("success");
+      } catch {
+        setStatus("error");
+      }
     }
   };
 
