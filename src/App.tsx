@@ -125,7 +125,7 @@ export default function App() {
       <div ref={scrollContainerRef} className="lg:w-[65%] xl:w-[70%] p-4 py-8 lg:p-12 w-full relative z-10 lg:h-screen lg:overflow-y-auto custom-scrollbar -mt-8 sm:-mt-12 lg:mt-0">
         <div className="max-w-3xl mx-auto space-y-6">
 
-          {status === "success" ? (
+          {status === "success" || (userEmail && localStorage.getItem(`survey_completed_${userEmail}`) === 'true') ? (
             <SuccessState onReset={handleReset} isNeverBNPL={formData["scr_3"] === "never"} />
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); if (currentStep === sections.length - 1) handleSubmit(e); }} noValidate className="space-y-6">
