@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { FormData, SubmitStatus } from "../types";
 import { questions, sections } from "../data/questions";
 
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOoHJXeLeeprlppr9CzD1-bkz5E1WuyEi4ydZGJcETcfH1ttlyRbAD36blJVTYpiGn/exec";
+export const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwEh6sdjZDxPjmPu8Qg1zvo7Bodi6HNU7IGQjUxM2Ml2dG8LhxrsNJAqigyPMdIORFceQ/exec";
 
 const getInitialState = (): FormData => {
   try {
