@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FormData, SubmitStatus } from "../types";
 import { questions, sections } from "../data/questions";
 
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOoHJXeLeeprlppr9CzD1-bkz5E1WuyEi4ydZGJcETcfH1ttlyRbAD36blJVTYpiGn/exec";
 
 const getInitialState = (): FormData => {
+  try {
+    const saved = localStorage.getItem('survey_formData');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (e) {
+    console.error("Failed to parse saved form data", e);
+  }
+
   const initial: FormData = {};
   questions.forEach((q) => {
     if (q.type === 'info') return;
@@ -50,12 +59,23 @@ export const useSurveyForm = (userEmail: string | null) => {
   const [formData, setFormData] = useState<FormData>(getInitialState());
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [currentStep, setCurrentStep] = useState(0);
+  
+  const savedStep = localStorage.getItem('survey_currentStep');
+  const [currentStep, setCurrentStep] = useState(savedStep ? parseInt(savedStep, 10) : 0);
 
-  const handleChange = (key: string, value: string | string[]) => {
+  // Save to localStorage when state changes
+  useEffect(() => {
+    localStorage.setItem('survey_formData', JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem('survey_currentStep', currentStep.toString());
+  }, [currentStep]);
+
+  const handleChange = useCallback((key: string, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
     setErrors((prev) => ({ ...prev, [key]: "" }));
-  };
+  }, []);
 
   const validateStep = (stepIndex: number): boolean => {
     const newErrors: Record<string, string> = {};
@@ -175,7 +195,23 @@ export const useSurveyForm = (userEmail: string | null) => {
   };
 
   const handleReset = () => {
-    setFormData(getInitialState());
+    localStorage.removeItem('survey_formData');
+    localStorage.removeItem('survey_currentStep');
+    const initial = {};
+    questions.forEach((q) => {
+      if (q.type === 'info') return;
+      if (q.type === 'matrix') {
+        q.rows.forEach(row => { initial[`${q.id}_${row.id}`] = ""; });
+      } else if (q.type === 'checkbox') {
+        initial[q.id] = [];
+        if (q.options.some(o => o.allowCustom)) initial[`${q.id}_custom`] = "";
+      } else {
+        initial[q.id] = "";
+        if (q.type === 'radio' && q.options.some(o => o.allowCustom)) initial[`${q.id}_custom`] = "";
+        if (q.type === 'text' && (q as any).requireConfirm) initial[`${q.id}_confirmed`] = "false";
+      }
+    });
+    setFormData(initial as FormData);
     setStatus("idle");
     setErrors({});
     setCurrentStep(0);
