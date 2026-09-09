@@ -45,7 +45,15 @@ export const getVisibleQuestions = (section: any, formData: FormData) => {
   const visible = [];
   
   for (const q of currentQuestions) {
+    if ((q as any).dependencies) {
+      const depsMet = ((q as any).dependencies as string[]).every(dep => !!formData[dep]);
+      if (!depsMet) {
+        break;
+      }
+    }
+
     visible.push(q);
+    
     if ((q as any).requireConfirm) {
       if (formData[`${q.id}_confirmed`] !== 'true') {
         break;

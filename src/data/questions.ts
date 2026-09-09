@@ -434,6 +434,7 @@ export const questions: Question[] = [
     type: "info",
     text: "💡 Vậy \u201cTrào Phúng Thị Giác\u201d là gì nhỉ?",
     description: "Trào phúng thị giác là cách sử dụng hình ảnh, nhân vật, tình huống, chữ viết hoặc các yếu tố thị giác kết hợp với sự hài hước, châm biếm, mỉa mai hoặc cường điệu để thể hiện một góc nhìn, bình luận hoặc phê phán về một vấn đề trong cuộc sống.\n\nNói đơn giản hơn — thay vì nói một vấn đề theo cách nghiêm túc, trào phúng thị giác \u201cnói bằng sự hài hước\u201d để người xem vừa thấy thú vị, vừa nhận ra thông điệp hoặc vấn đề được đề cập.",
+    dependencies: ["p6_1", "p6_2"]
   },
   {
     id: "info_p6",

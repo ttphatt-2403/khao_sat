@@ -41,7 +41,7 @@ export const SuccessState = ({ onReset, isNeverBNPL = false }: SuccessStateProps
         
         {/* Text body */}
         {isNeverBNPL ? (
-          <div className="text-slate-500 mb-10 max-w-[500px] mx-auto space-y-5 leading-relaxed text-[15px]">
+          <div className="text-slate-500 mb-10 max-w-[600px] mx-auto space-y-5 leading-relaxed text-[15px]">
             <p>Cảm ơn bạn rất nhiều vì đã dành thời gian chia sẻ cùng Mơ Nì nha!</p>
             <p>Vì bạn chưa từng sử dụng dịch vụ Mua trước - Trả sau (BNPL) nên khảo sát của tụi mình sẽ dừng tại đây để tập trung vào những người đã có trải nghiệm với dịch vụ này.</p>
             <p>Tuy vậy, câu trả lời của bạn vẫn là một mảnh ghép nhỏ và rất đáng quý trong quá trình tìm hiểu về thói quen và hành vi chi tiêu của Gen Z. 🫶</p>
@@ -49,21 +49,14 @@ export const SuccessState = ({ onReset, isNeverBNPL = false }: SuccessStateProps
             <p className="font-bold text-[#004de6] pt-2 text-base">Chúc bạn luôn tính tới, tính lui và tính cả túi trước mỗi quyết định chi tiêu nha! 💙✨</p>
           </div>
         ) : (
-          <div className="text-slate-500 mb-10 max-w-[500px] mx-auto space-y-5 leading-relaxed text-[15px]">
+          <div className="text-slate-500 mb-10 max-w-[600px] mx-auto space-y-5 leading-relaxed text-[15px]">
             <p>Cảm ơn bạn rất nhiều vì đã dành thời gian chia sẻ những suy nghĩ, trải nghiệm và thói quen của mình cùng Mơ Nì.</p>
             <p>Mỗi câu trả lời của bạn đều là một mảnh ghép nhỏ giúp tụi mình hiểu hơn về Gen Z và hoàn thiện đồ án tốt nghiệp này.</p>
             <p className="font-bold text-[#004de6] pt-2 text-base">Cảm ơn bạn đã giúp Mơ Nì đi thêm một bước trên hành trình này nhé! ♡</p>
           </div>
         )}
         
-        {/* Button */}
-        <button
-          onClick={onReset}
-          className="px-8 py-3 rounded-full text-[15px] font-bold transition-all duration-300 bg-[#004de6] text-white hover:bg-[#00369b] hover:shadow-lg flex items-center gap-2 mx-auto group"
-        >
-          Đi đến lại khảo sát 
-          <span className="group-hover:translate-x-1 transition-transform">→</span>
-        </button>
+
       </div>
 
 
