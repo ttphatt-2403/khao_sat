@@ -367,7 +367,6 @@ export const questions: Question[] = [
       { value: "thaoluan", label: "Bài đăng mở không gian thảo luận, bình luận và góp ý cùng cộng đồng." },
       { value: "hinhhaihuoc", label: "Hình ảnh hài hước, châm biếm về thói quen chi tiêu." },
       { value: "minigame", label: "Minigame hoặc câu chuyện dễ đọc, dễ theo dõi." },
-      { value: "khonggioithieu", label: "Tôi không giới thiệu trang như vậy cho ai." },
     ],
   },
   {

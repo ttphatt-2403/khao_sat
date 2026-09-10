@@ -112,8 +112,6 @@ export const useSurveyForm = (userEmail: string | null) => {
       } else {
         if (!formData[q.id]) {
           newErrors[q.id] = "Vui lòng hoàn thành câu hỏi này.";
-        } else if (q.type === 'radio' && formData[q.id] === 'other' && !formData[`${q.id}_custom`]) {
-          newErrors[`${q.id}_custom`] = "Vui lòng nhập nội dung khác.";
         } else if (q.type === 'text' && (q as any).requireConfirm && formData[`${q.id}_confirmed`] !== 'true') {
           newErrors[q.id] = "Vui lòng bấm Xác nhận câu trả lời trước khi tiếp tục.";
         }
