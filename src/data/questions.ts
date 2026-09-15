@@ -82,7 +82,6 @@ export const questions: Question[] = [
     options: [
       { value: "male", label: "Nam" },
       { value: "female", label: "Nữ" },
-      { value: "other", label: "Khác…" },
     ],
   },
   {
@@ -225,7 +224,7 @@ export const questions: Question[] = [
     rows: [
       { id: "ATT1", label: "Tôi cho rằng cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL là điều có lợi cho bản thân." },
       { id: "ATT2", label: "Tôi cho rằng cân nhắc tổng chi phí, khả năng chi trả và nghĩa vụ thanh toán trước khi sử dụng BNPL là một quyết định đúng đắn." },
-      { id: "ATT3", label: "Tôi có thái độ tích cực đối với việc cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL." },
+      { id: "ATT3", label: "Tôi cho rằng cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL là điều cần thiết." },
     ],
   },
   {
@@ -254,7 +253,7 @@ export const questions: Question[] = [
       { id: "SN1", label: "Gia đình cho rằng tôi nên cân nhắc kỹ các yếu tố, bao gồm tổng chi phí thanh toán, khả năng chi trả và nghĩa vụ thanh toán phát sinh, trước khi quyết định chi tiêu bằng BNPL." },
       { id: "SN2", label: "Bạn bè của tôi mong muốn tôi cân nhắc kỹ các yếu tố, bao gồm tổng chi phí thanh toán, khả năng chi trả và nghĩa vụ thanh toán phát sinh, trước khi quyết định chi tiêu bằng BNPL." },
       { id: "SN3", label: "Những người xung quanh tôi khuyến khích tôi cân nhắc kỹ các yếu tố, bao gồm tổng chi phí thanh toán, khả năng chi trả và nghĩa vụ thanh toán phát sinh, trước khi quyết định chi tiêu bằng BNPL." },
-      { id: "SN4", label: "Hầu hết những người tôi yêu quý đều cân nhắc kỹ các yếu tố, bao gồm tổng chi phí thanh toán, khả năng chi trả và nghĩa vụ thanh toán phát sinh, trước khi quyết định chi tiêu bằng BNPL." },
+      { id: "SN4", label: "Hầu hết những người tôi yêu quý đều cho rằng tôi nên cân nhắc kỹ các yếu tố bao gồm tổng chi phí thanh toán, khả năng chi trả và nghĩa vụ thanh toán phát sinh trước khi quyết định chi tiêu bằng BNPL." },
     ],
   },
   {
