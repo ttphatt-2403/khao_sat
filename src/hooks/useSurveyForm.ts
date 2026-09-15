@@ -199,7 +199,7 @@ export const useSurveyForm = (userEmail: string | null) => {
         redirect: "follow",
       });
       if (userEmail) {
-        localStorage.setItem(`survey_completed_${userEmail}`, 'true');
+        localStorage.setItem(`survey_v2_completed_${userEmail}`, 'true');
       }
       setStatus("success");
     } catch (err) {
@@ -209,7 +209,7 @@ export const useSurveyForm = (userEmail: string | null) => {
         const url = `${WEBHOOK_URL}?${params.toString()}&_method=POST`;
         await fetch(url, { mode: "no-cors" });
         if (userEmail) {
-          localStorage.setItem(`survey_completed_${userEmail}`, 'true');
+          localStorage.setItem(`survey_v2_completed_${userEmail}`, 'true');
         }
         setStatus("success");
       } catch {
@@ -225,8 +225,8 @@ export const useSurveyForm = (userEmail: string | null) => {
   };
 
   const handleReset = () => {
-    localStorage.removeItem('survey_formData');
-    localStorage.removeItem('survey_currentStep');
+    localStorage.removeItem('survey_v2_formData');
+    localStorage.removeItem('survey_v2_currentStep');
     const initial: Record<string, string | string[]> = {};
     questions.forEach((q) => {
       if (q.type === 'info') return;

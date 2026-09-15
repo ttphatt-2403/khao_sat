@@ -167,7 +167,7 @@ export const LoginScreen = ({ onLoginSuccess }: Props) => {
                         const decoded: any = jwtDecode(credentialResponse.credential);
                         
                         // Check if already completed
-                        if (localStorage.getItem(`survey_completed_${decoded.email}`) === 'true') {
+                        if (localStorage.getItem(`survey_v2_completed_${decoded.email}`) === 'true') {
                           alert("Bạn đã hoàn thành form rồi nhé. Cảm ơn bạn!");
                           return;
                         }
