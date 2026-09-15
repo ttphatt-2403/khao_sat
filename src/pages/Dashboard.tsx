@@ -72,7 +72,7 @@ const DonutChart = ({ data }: { data: { name: string; value: number }[] }) => {
 };
 
 // ─── Horizontal bar chart ─────────────────────────────────────────────────────
-const HorizBar = ({ data, max: maxProp }: { data: { name: string; value: number }[]; max?: number }) => {
+const HorizBar = ({ data, max: maxProp, total }: { data: { name: string; value: number }[]; max?: number; total?: number }) => {
   const maxVal = maxProp ?? Math.max(...data.map(d => d.value), 1);
   if (data.length === 0) return <NoData />;
   return (
@@ -88,6 +88,11 @@ const HorizBar = ({ data, max: maxProp }: { data: { name: string; value: number 
               <span className="text-white text-[10px] font-bold">{d.value}</span>
             </div>
           </div>
+          {total && (
+            <div className="w-10 shrink-0 text-[10px] text-slate-400 font-medium">
+              ({Math.round((d.value / total) * 100)}%)
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -203,7 +208,8 @@ export const Dashboard = () => {
   const p66Avg = avgScale(rawData, ["P6.6. Nhận ra thông điệp", "P6.6. Liên hệ chi tiết với TĐ", "P6.6. Hiểu cách truyền tải TĐ"]);
   const p68Avg = avgScale(rawData, ["P6.8. TĐ rõ ràng", "P6.8. TĐ có ý nghĩa", "P6.8. TĐ đáng ghi nhớ", "P6.8. TĐ dễ nhớ"], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
 
-  const bnplUsedYes = agg(rawData, "3. Đã từng dùng BNPL chưa?").find(d => d.name.toLowerCase().includes("đang") || d.name.toLowerCase().includes("từng"))?.value ?? "–";
+  const bnplUsedYesCount = agg(rawData, "3. Đã từng dùng BNPL chưa?").find(d => d.name.toLowerCase().includes("đang") || d.name.toLowerCase().includes("từng"))?.value || 0;
+  const bnplUsedYes = bnplUsedYesCount || "–";
 
   return (
     <div className="min-h-screen font-['Be_Vietnam_Pro']"
@@ -255,9 +261,9 @@ export const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Card title="Độ tuổi" subtitle="Câu sàng lọc 1"><DonutChart data={agg(rawData, "1. Độ tuổi")} /></Card>
             <Card title="Giới tính" subtitle="P1.1"><DonutChart data={agg(rawData, "P1.1. Giới tính")} /></Card>
-            <Card title="Tình trạng hiện tại" subtitle="P1.2"><HorizBar data={agg(rawData, "P1.2. Tình trạng hiện tại")} /></Card>
-            <Card title="Thu nhập trung bình / tháng" subtitle="P1.3"><HorizBar data={agg(rawData, "P1.3. Mức thu nhập TB/tháng")} /></Card>
-            <Card title="Chi tiêu trung bình / tháng" subtitle="P1.4" span2><HorizBar data={agg(rawData, "P1.4. Mức chi tiêu TB/tháng")} /></Card>
+            <Card title="Tình trạng hiện tại" subtitle="P1.2"><HorizBar total={n} data={agg(rawData, "P1.2. Tình trạng hiện tại")} /></Card>
+            <Card title="Thu nhập trung bình / tháng" subtitle="P1.3"><HorizBar total={n} data={agg(rawData, "P1.3. Mức thu nhập TB/tháng")} /></Card>
+            <Card title="Chi tiêu trung bình / tháng" subtitle="P1.4" span2><HorizBar total={n} data={agg(rawData, "P1.4. Mức chi tiêu TB/tháng")} /></Card>
           </div>
 
           {/* ── P2: Hành vi BNPL ─────────────────────────────────────────────── */}
@@ -265,8 +271,8 @@ export const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Card title="Tần suất chốt đơn BNPL" subtitle="P2.2"><DonutChart data={agg(rawData, "P2.2. Tần suất chốt đơn BNPL")} /></Card>
             <Card title="Tổng giá trị mua / tháng" subtitle="P2.3"><DonutChart data={agg(rawData, "P2.3. Tổng giá trị mua/tháng bằng BNPL")} /></Card>
-            <Card title="Loại SP/DV mua bằng BNPL" subtitle="P2.1 · Đa lựa chọn" span2><HorizBar data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
-            <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
+            <Card title="Loại SP/DV mua bằng BNPL" subtitle="P2.1 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
+            <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
           </div>
 
           {/* ── P4: Mô hình TPB ──────────────────────────────────────────────── */}
@@ -302,16 +308,16 @@ export const Dashboard = () => {
           {/* ── P5: Truyền thông ──────────────────────────────────────────────── */}
           <Section>Phần 5 · Thói quen & kênh truyền thông</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Mạng xã hội hay dùng nhất" subtitle="P5.1"><DonutChart data={agg(rawData, "P5.1. MXH hay dùng nhất")} /></Card>
-            <Card title="Buổi sử dụng MXH" subtitle="P5.2"><DonutChart data={agg(rawData, "P5.2. Buổi dùng MXH trong ngày")} /></Card>
-            <Card title="Nội dung Facebook thu hút" subtitle="P5.5 · Đa lựa chọn" span2><HorizBar data={agg(rawData, "P5.5. Nội dung FB thu hút")} /></Card>
-            <Card title="Dạng video TikTok thu hút" subtitle="P5.6 · Đa lựa chọn" span2><HorizBar data={agg(rawData, "P5.6. Dạng video TikTok thu hút")} /></Card>
+            <Card title="Mạng xã hội hay dùng nhất" subtitle="P5.1"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.1. MXH hay dùng nhất")} /></Card>
+            <Card title="Buổi sử dụng MXH" subtitle="P5.2"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.2. Buổi dùng MXH trong ngày")} /></Card>
+            <Card title="Nội dung Facebook thu hút" subtitle="P5.5 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.5. Nội dung FB thu hút")} /></Card>
+            <Card title="Dạng video TikTok thu hút" subtitle="P5.6 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.6. Dạng video TikTok thu hút")} /></Card>
           </div>
 
           {/* ── P6: Nhận thức ─────────────────────────────────────────────────── */}
           <Section>Phần 6 · Nhận thức trào phúng thị giác</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Đã nghe về 'trào phúng thị giác' chưa?" subtitle="P6.1"><HorizBar data={agg(rawData, "P6.1. Đã nghe 'trào phúng thị giác' chưa?")} /></Card>
+            <Card title="Đã nghe về 'trào phúng thị giác' chưa?" subtitle="P6.1"><HorizBar total={n} data={agg(rawData, "P6.1. Đã nghe 'trào phúng thị giác' chưa?")} /></Card>
             <Card title="Ảnh hưởng đến nhận thức BNPL" subtitle="P6.7 · Điểm TB thang 1–7"><ScaleBar data={avgScale(rawData, ["P6.7. Quan tâm hơn đến BNPL cẩn thận", "P6.7. Chú ý rủi ro BNPL"])} /></Card>
             <Card title="Đánh giá nội dung (P6.3)" subtitle="Điểm TB thang 1–7"><ScaleBar data={p63Avg} /></Card>
             <Card title="Nhận thức thông điệp (P6.6)" subtitle="Điểm TB thang 1–7"><ScaleBar data={p66Avg} /></Card>
