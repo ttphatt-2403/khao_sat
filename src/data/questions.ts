@@ -92,7 +92,7 @@ export const questions: Question[] = [
     options: [
       { value: "hs", label: "Học sinh" },
       { value: "sv_chua", label: "Sinh viên chưa đi làm" },
-      { value: "sv_roi", label: "Sinh viên đã đi làm" },
+      { value: "sv_roi", label: "Sinh viên vừa học vừa làm" },
       { value: "di_lam", label: "Đã đi làm" },
     ],
   },
