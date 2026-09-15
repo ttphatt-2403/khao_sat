@@ -9,16 +9,16 @@ import { LoginScreen } from "../components/LoginScreen";
 import { useState, useEffect, useRef } from "react";
 
 export default function SurveyPage() {
-  const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem('survey_userEmail'));
-  const [userName, setUserName] = useState<string | null>(() => localStorage.getItem('survey_userName'));
+  const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem('survey_v2_userEmail'));
+  const [userName, setUserName] = useState<string | null>(() => localStorage.getItem('survey_v2_userName'));
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (userEmail) localStorage.setItem('survey_userEmail', userEmail);
+    if (userEmail) localStorage.setItem('survey_v2_userEmail', userEmail);
   }, [userEmail]);
 
   useEffect(() => {
-    if (userName) localStorage.setItem('survey_userName', userName);
+    if (userName) localStorage.setItem('survey_v2_userName', userName);
   }, [userName]);
 
   const {
