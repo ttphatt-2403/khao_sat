@@ -6,7 +6,7 @@ export const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwEh6sdjZDxP
 
 const getInitialState = (): FormData => {
   try {
-    const saved = localStorage.getItem('survey_formData');
+    const saved = localStorage.getItem('survey_v2_formData');
     if (saved) {
       return JSON.parse(saved);
     }
@@ -68,16 +68,16 @@ export const useSurveyForm = (userEmail: string | null) => {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   
-  const savedStep = localStorage.getItem('survey_currentStep');
+  const savedStep = localStorage.getItem('survey_v2_currentStep');
   const [currentStep, setCurrentStep] = useState(savedStep ? parseInt(savedStep, 10) : 0);
 
   // Save to localStorage when state changes
   useEffect(() => {
-    localStorage.setItem('survey_formData', JSON.stringify(formData));
+    localStorage.setItem('survey_v2_formData', JSON.stringify(formData));
   }, [formData]);
 
   useEffect(() => {
-    localStorage.setItem('survey_currentStep', currentStep.toString());
+    localStorage.setItem('survey_v2_currentStep', currentStep.toString());
   }, [currentStep]);
 
   const handleChange = useCallback((key: string, value: string | string[]) => {
