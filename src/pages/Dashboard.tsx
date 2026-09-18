@@ -197,7 +197,7 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   // Reset page when filter/search changes
-  React.useEffect(() => setPage(1), [filter, search]);
+  useEffect(() => setPage(1), [filter, search]);
 
   if (quotes.length === 0) return null;
 
