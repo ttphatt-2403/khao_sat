@@ -17,11 +17,21 @@ const rText = (qId: string, rId: string) => {
 const agg = (data: any[], key: string) => {
   const counts: Record<string, number> = {};
   data.forEach(r => {
-    const val = r[key];
+    let val = r[key];
     if (!val || val === "") return;
-    if (typeof val === "string" && val.includes(",")) {
-      val.split(",").forEach((v: string) => { const t = v.trim(); if (t) counts[t] = (counts[t] || 0) + 1; });
-    } else { counts[val] = (counts[val] || 0) + 1; }
+    
+    if (typeof val === "string") {
+      // Backward compatibility for old data that had commas inside the label
+      val = val.replace("Tiện lợi, thanh toán nhanh mượt", "Tiện lợi và thanh toán nhanh mượt");
+      val = val.replace("chia nhỏ khoản tiền, không bị", "chia nhỏ khoản tiền và không bị");
+      
+      if (val.includes(",")) {
+        val.split(",").forEach((v: string) => { const t = v.trim(); if (t) counts[t] = (counts[t] || 0) + 1; });
+        return;
+      }
+    }
+    
+    counts[val] = (counts[val] || 0) + 1;
   });
   return Object.entries(counts).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
 };
