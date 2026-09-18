@@ -199,8 +199,6 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
   // Reset page when filter/search changes
   useEffect(() => setPage(1), [filter, search]);
 
-  if (quotes.length === 0) return null;
-
   return (
     <div className="space-y-6 mt-8">
       {/* Header & Controls */}
