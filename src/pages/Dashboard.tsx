@@ -407,7 +407,7 @@ export const Dashboard = () => {
   ], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
 
   const p65Quotes = rawData
-    .map(r => r["P6.5. Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?"])
+    .map(r => r["P6.5. Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?"] || r["p6_5"])
     .filter(q => q && typeof q === "string" && q.trim().length > 0);
 
   const bnplUsedYesCount = agg(rawData, "3. Đã từng dùng BNPL chưa?").find(d => d.name.toLowerCase().includes("đang") || d.name.toLowerCase().includes("từng"))?.value || 0;
