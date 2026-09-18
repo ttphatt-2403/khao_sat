@@ -169,12 +169,25 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
 
   const processed = quotes.map((q, i) => ({ id: i + 1, text: q }));
 
+  // Define pinned quote IDs that should appear first (based on user preference)
+  const PINNED_IDS = [1, 5, 8, 2, 53, 56];
+  
+  // Sort to put pinned IDs at the top, preserving their specific order
+  processed.sort((a, b) => {
+    const indexA = PINNED_IDS.indexOf(a.id);
+    const indexB = PINNED_IDS.indexOf(b.id);
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    return 0; // Keep original order for the rest
+  });
+
   const filtered = processed.filter(q => 
     q.text.toLowerCase().includes(search.toLowerCase())
   );
   
   // Pagination
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 15;
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
