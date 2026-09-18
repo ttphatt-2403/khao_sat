@@ -362,29 +362,9 @@ export const Dashboard = () => {
             <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
           </div>
 
-          {/* ── P4: Mô hình TPB ──────────────────────────────────────────────── */}
+          {/* ── P4: Mô hình TPB ────────────────────────────────________________ */}
           <Section>Phần 4 · Mô hình TPB — Ý định cân nhắc BNPL</Section>
-          {/* Overview summary row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { label: "Thái độ (ATT)", avg: attAvg.length ? +(attAvg.reduce((s, d) => s + d.avg, 0) / attAvg.length).toFixed(2) : 0 },
-              { label: "Kiểm soát (PBC)", avg: pbcAvg.length ? +(pbcAvg.reduce((s, d) => s + d.avg, 0) / pbcAvg.length).toFixed(2) : 0 },
-              { label: "Chuẩn mực (SN)", avg: snAvg.length ? +(snAvg.reduce((s, d) => s + d.avg, 0) / snAvg.length).toFixed(2) : 0 },
-              { label: "Ý định (INT)", avg: intAvg.length ? +(intAvg.reduce((s, d) => s + d.avg, 0) / intAvg.length).toFixed(2) : 0 },
-            ].map((f, i) => (
-              <div key={i} className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-white shadow-sm text-center">
-                <svg className="w-5 h-5 mx-auto mb-1" style={{color: PALETTE[i]}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-                <div className="text-2xl font-bold" style={{ color: PALETTE[i] }}>{f.avg}</div>
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5 font-semibold leading-tight">{f.label}</div>
-                <div className="mt-2 bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${(f.avg / 7) * 100}%`, background: PALETTE[i] }} />
-                </div>
-                <div className="text-[9px] text-slate-300 mt-0.5">/ 7</div>
-              </div>
-            ))}
-          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Card title="Thái độ (ATT)" subtitle="Điểm TB thang 1–7"><ScaleBar data={attAvg} /></Card>
             <Card title="Kiểm soát hành vi (PBC)" subtitle="Điểm TB thang 1–7"><ScaleBar data={pbcAvg} /></Card>
