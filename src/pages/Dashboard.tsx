@@ -136,6 +136,89 @@ const ScaleBar = ({ data, max = 7 }: { data: { label: string; avg: number; dist?
   );
 };
 
+// ─── Open Ended Quotes Grid ───────────────────────────────────────────────────
+const QuotesGrid = ({ quotes }: { quotes: string[] }) => {
+  const [filter, setFilter] = useState("Tất cả");
+  const [search, setSearch] = useState("");
+
+  const getQuoteTag = (text: string) => {
+    const lower = text.toLowerCase();
+    if (lower.includes("cân nhắc") || lower.includes("suy nghĩ") || lower.includes("quản lý") || lower.includes("kiểm soát")) return "Cân nhắc chi tiêu";
+    if (lower.includes("áp lực") || lower.includes("trả nợ") || lower.includes("hóa đơn") || lower.includes("khoản vay") || lower.includes("tiền") || lower.includes("hậu quả")) return "Áp lực trả nợ";
+    if (lower.includes("tiện lợi") || lower.includes("dễ dàng") || lower.includes("nhanh") || lower.includes("hấp dẫn")) return "Sự tiện lợi";
+    if (lower.includes("mua sắm") || lower.includes("cám dỗ") || lower.includes("ham muốn")) return "Cám dỗ mua sắm";
+    return "Khác";
+  };
+
+  const TAG_COLORS: Record<string, string> = {
+    "Cân nhắc chi tiêu": "bg-blue-100 text-blue-600",
+    "Áp lực trả nợ": "bg-red-100 text-red-600",
+    "Sự tiện lợi": "bg-orange-100 text-orange-600",
+    "Cám dỗ mua sắm": "bg-purple-100 text-purple-600",
+    "Khác": "bg-slate-100 text-slate-600",
+  };
+
+  const processed = quotes.map((q, i) => ({ id: i + 1, text: q, tag: getQuoteTag(q) }));
+  const tags = ["Tất cả", ...Array.from(new Set(processed.map(q => q.tag)))];
+
+  const filtered = processed.filter(q => 
+    (filter === "Tất cả" || q.tag === filter) &&
+    q.text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (quotes.length === 0) return null;
+
+  return (
+    <div className="space-y-6 mt-8">
+      {/* Header & Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white">
+        <div>
+          <h3 className="text-[#00369b] font-bold text-lg font-['Space_Grotesk'] uppercase flex items-center gap-2">
+            <span className="text-[#ff914d] text-xl">•</span> Góc nhìn người dùng (Câu hỏi mở)
+          </h3>
+          <p className="text-slate-500 text-sm">Câu hỏi: Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?</p>
+          <p className="text-slate-400 text-xs mt-1">{filtered.length} câu trả lời</p>
+        </div>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <select 
+            value={filter} 
+            onChange={e => setFilter(e.target.value)}
+            className="px-3 py-2 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 outline-none w-1/3 sm:w-32 focus:border-[#00369b] transition-colors"
+          >
+            {tags.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <input 
+            type="text" 
+            placeholder="Tìm kiếm câu trả lời..." 
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="px-3 py-2 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 outline-none flex-1 sm:w-48 focus:border-[#00369b] transition-colors"
+          />
+        </div>
+      </div>
+
+      {/* Masonry Grid */}
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
+        {filtered.map(q => (
+          <div key={q.id} className="break-inside-avoid bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative group">
+            <div className="text-4xl font-serif text-[#00369b]/20 absolute top-4 left-4 group-hover:text-[#00369b]/40 transition-colors">"</div>
+            <p className="text-slate-700 text-sm leading-relaxed relative z-10 pt-4 pb-6 font-medium">{q.text}</p>
+            <div className="flex items-center justify-between mt-auto">
+              <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${TAG_COLORS[q.tag]}`}>
+                {q.tag}
+              </span>
+              <span className="text-slate-300 text-xs font-mono">#{q.id.toString().padStart(2, '0')}</span>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="col-span-full py-10 text-center text-slate-400">Không tìm thấy câu trả lời nào phù hợp.</div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const NoData = () => <p className="text-slate-300 text-sm text-center py-6">Chưa có dữ liệu</p>;
 
@@ -207,6 +290,10 @@ export const Dashboard = () => {
   const p63Avg = avgScale(rawData, ["P6.3. Đánh giá - Hài hước", "P6.3. Đánh giá - Gây thích thú", "P6.3. Đánh giá - Nhàm chán", "P6.3. Đánh giá - Gây khó chịu"]);
   const p66Avg = avgScale(rawData, ["P6.6. Nhận ra thông điệp", "P6.6. Liên hệ chi tiết với TĐ", "P6.6. Hiểu cách truyền tải TĐ"]);
   const p68Avg = avgScale(rawData, ["P6.8. TĐ rõ ràng", "P6.8. TĐ có ý nghĩa", "P6.8. TĐ đáng ghi nhớ", "P6.8. TĐ dễ nhớ"], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
+
+  const p65Quotes = rawData
+    .map(r => r["P6.5. Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?"])
+    .filter(q => q && typeof q === "string" && q.trim().length > 0);
 
   const bnplUsedYesCount = agg(rawData, "3. Đã từng dùng BNPL chưa?").find(d => d.name.toLowerCase().includes("đang") || d.name.toLowerCase().includes("từng"))?.value || 0;
   const bnplUsedYes = bnplUsedYesCount || "–";
@@ -326,6 +413,9 @@ export const Dashboard = () => {
               <ScaleBar data={avgScale(rawData, ["P6.10. Hình thu hút chú ý", "P6.10. Hình giúp hiểu vấn đề", "P6.10. Hình làm nổi bật châm biếm"], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
             </Card>
           </div>
+
+          {/* ── Open Ended Quotes ──────────────────────────────────────────────── */}
+          <QuotesGrid quotes={p65Quotes} />
 
           {/* Footer */}
           <div className="text-center text-xs text-slate-400 pb-4">
