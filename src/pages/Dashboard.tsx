@@ -166,16 +166,28 @@ const ScaleBar = ({ data, max = 7 }: { data: { label: string; avg: number; dist?
 const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: string }) => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [pinnedIds, setPinnedIds] = useState<number[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('pinnedQuotes') || '[]');
+    } catch {
+      return [];
+    }
+  });
+
+  const togglePin = (id: number) => {
+    setPinnedIds(prev => {
+      const newPinned = prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id];
+      localStorage.setItem('pinnedQuotes', JSON.stringify(newPinned));
+      return newPinned;
+    });
+  };
 
   const processed = quotes.map((q, i) => ({ id: i + 1, text: q }));
-
-  // Define pinned quote IDs that should appear first (based on user preference)
-  const PINNED_IDS = [1, 5, 8, 2, 53, 56];
   
   // Sort to put pinned IDs at the top, preserving their specific order
   processed.sort((a, b) => {
-    const indexA = PINNED_IDS.indexOf(a.id);
-    const indexB = PINNED_IDS.indexOf(b.id);
+    const indexA = pinnedIds.indexOf(a.id);
+    const indexB = pinnedIds.indexOf(b.id);
     if (indexA !== -1 && indexB !== -1) return indexA - indexB;
     if (indexA !== -1) return -1;
     if (indexB !== -1) return 1;
@@ -224,15 +236,29 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
 
       {/* Masonry Grid */}
       <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5 mt-4">
-        {paginated.map(q => (
-          <div key={q.id} className="break-inside-avoid bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 relative group flex flex-col h-full min-h-[160px]">
-            <div className="text-6xl leading-none font-serif text-[#00369b] font-bold">"</div>
-            <p className="text-slate-700 text-[15px] leading-relaxed relative z-10 pb-6 font-medium mt-[-10px]">{q.text}</p>
-            <div className="flex items-center justify-end mt-auto">
-              <span className="text-slate-400 text-xs font-mono font-medium">#{q.id.toString().padStart(2, '0')}</span>
+        {paginated.map(q => {
+          const isPinned = pinnedIds.includes(q.id);
+          return (
+            <div key={q.id} className={`break-inside-avoid bg-white p-6 rounded-2xl border ${isPinned ? 'border-[#00369b]/30 shadow-[0_4px_20px_rgba(0,54,155,0.08)]' : 'border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)]'} hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 relative group flex flex-col h-full min-h-[160px]`}>
+              <div className="absolute top-4 right-4 z-20">
+                <button 
+                  onClick={() => togglePin(q.id)}
+                  className={`p-2 rounded-full transition-colors ${isPinned ? 'text-[#00369b] bg-blue-50' : 'text-slate-300 hover:text-slate-500 hover:bg-slate-50 opacity-0 group-hover:opacity-100'}`}
+                  title={isPinned ? "Bỏ ghim" : "Ghim câu này lên đầu"}
+                >
+                  <svg className="w-4 h-4" fill={isPinned ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>
+                </button>
+              </div>
+              <div className={`text-6xl leading-none font-serif ${isPinned ? 'text-[#00369b]' : 'text-slate-200'} font-bold transition-colors`}>"</div>
+              <p className="text-slate-700 text-[15px] leading-relaxed relative z-10 pb-6 font-medium mt-[-10px]">{q.text}</p>
+              <div className="flex items-center justify-end mt-auto">
+                <span className="text-slate-400 text-xs font-mono font-medium">#{q.id.toString().padStart(2, '0')}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         {paginated.length === 0 && (
           <div className="col-span-full py-12 text-center text-slate-400 bg-white/50 rounded-2xl border border-dashed border-slate-300">Không tìm thấy câu trả lời nào phù hợp.</div>
         )}
