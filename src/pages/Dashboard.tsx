@@ -347,6 +347,8 @@ export const Dashboard = () => {
           <Section>Phần 1 · Thông tin người tham gia</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Card title="Độ tuổi" subtitle="Câu sàng lọc 1"><DonutChart data={agg(rawData, "1. Độ tuổi")} /></Card>
+            <Card title="Nơi sinh sống" subtitle="Câu sàng lọc 2"><DonutChart data={agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?").length ? agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?") : (agg(rawData, "2. Nơi sinh sống").length ? agg(rawData, "2. Nơi sinh sống") : agg(rawData, "scr_2"))} /></Card>
+            <Card title="Đã từng dùng BNPL chưa?" subtitle="Câu sàng lọc 3" span2><HorizBar total={n} data={agg(rawData, "3. Đã từng dùng BNPL chưa?").length ? agg(rawData, "3. Đã từng dùng BNPL chưa?") : (agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?").length ? agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?") : agg(rawData, "scr_3"))} /></Card>
             <Card title="Giới tính" subtitle="P1.1"><DonutChart data={agg(rawData, "P1.1. Giới tính")} /></Card>
             <Card title="Tình trạng hiện tại" subtitle="P1.2"><HorizBar total={n} data={agg(rawData, "P1.2. Tình trạng hiện tại")} /></Card>
             <Card title="Thu nhập trung bình / tháng" subtitle="P1.3"><HorizBar total={n} data={agg(rawData, "P1.3. Mức thu nhập TB/tháng")} /></Card>
