@@ -145,9 +145,10 @@ const ScaleBar = ({ data, max = 7 }: { data: { label: string; avg: number; dist?
 };
 
 // ─── Open Ended Quotes Grid ───────────────────────────────────────────────────
-const QuotesGrid = ({ quotes }: { quotes: string[] }) => {
+const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: string }) => {
   const [filter, setFilter] = useState("Tất cả");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
   const getQuoteTag = (text: string) => {
     const lower = text.toLowerCase();
@@ -166,63 +167,140 @@ const QuotesGrid = ({ quotes }: { quotes: string[] }) => {
     "Khác": "bg-slate-100 text-slate-600",
   };
 
+  const TAG_ICONS: Record<string, string> = {
+    "Tất cả": "Tất cả", 
+    "Cân nhắc chi tiêu": "💡",
+    "Áp lực trả nợ": "🚨",
+    "Sự tiện lợi": "⚡",
+    "Cám dỗ mua sắm": "🛍️",
+    "Khác": "💭",
+  };
+
   const processed = quotes.map((q, i) => ({ id: i + 1, text: q, tag: getQuoteTag(q) }));
+  
+  // Calculate counts for each tag
+  const tagCounts: Record<string, number> = { "Tất cả": processed.length };
+  processed.forEach(q => {
+    tagCounts[q.tag] = (tagCounts[q.tag] || 0) + 1;
+  });
+  
   const tags = ["Tất cả", ...Array.from(new Set(processed.map(q => q.tag)))];
 
   const filtered = processed.filter(q => 
     (filter === "Tất cả" || q.tag === filter) &&
     q.text.toLowerCase().includes(search.toLowerCase())
   );
+  
+  // Pagination
+  const PAGE_SIZE = 12;
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // Reset page when filter/search changes
+  React.useEffect(() => setPage(1), [filter, search]);
 
   if (quotes.length === 0) return null;
 
   return (
     <div className="space-y-6 mt-8">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 bg-white/50 backdrop-blur-sm p-6 rounded-3xl border border-white shadow-sm">
+        <div className="flex-1">
           <h3 className="text-[#00369b] font-bold text-lg font-['Space_Grotesk'] uppercase flex items-center gap-2">
-            <span className="text-[#ff914d] text-xl">•</span> Góc nhìn người dùng (Câu hỏi mở)
+            P6 • Góc nhìn người dùng (Câu hỏi mở)
           </h3>
-          <p className="text-slate-500 text-sm">Câu hỏi: Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?</p>
+          <div className="text-slate-600 mt-2 font-medium">Câu hỏi: <span className="font-normal">{questionText}</span></div>
           <p className="text-slate-400 text-xs mt-1">{filtered.length} câu trả lời</p>
         </div>
-        <div className="flex gap-2 w-full sm:w-auto">
-          <select 
-            value={filter} 
-            onChange={e => setFilter(e.target.value)}
-            className="px-3 py-2 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 outline-none w-1/3 sm:w-32 focus:border-[#00369b] transition-colors"
-          >
-            {tags.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-          <input 
-            type="text" 
-            placeholder="Tìm kiếm câu trả lời..." 
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="px-3 py-2 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 outline-none flex-1 sm:w-48 focus:border-[#00369b] transition-colors"
-          />
+        
+        <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+          <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <svg className="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Tìm kiếm câu trả lời..." 
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="text-sm text-slate-600 outline-none w-full sm:w-56 bg-transparent placeholder-slate-400"
+            />
+          </div>
         </div>
+      </div>
+      
+      {/* Tag Filter Pills */}
+      <div className="flex flex-wrap gap-2 items-center">
+        {tags.map(t => (
+          <button 
+            key={t}
+            onClick={() => setFilter(t)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${filter === t ? 'bg-white text-[#00369b] shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-200' : 'bg-white/50 text-slate-500 hover:bg-white hover:text-slate-700 border border-transparent'}`}
+          >
+            {t !== "Tất cả" && <span>{TAG_ICONS[t] || "❖"}</span>}
+            {t}
+            <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${filter === t ? 'bg-[#00369b]/10 text-[#00369b]' : 'bg-slate-200 text-slate-500'}`}>{tagCounts[t]}</span>
+          </button>
+        ))}
       </div>
 
       {/* Masonry Grid */}
       <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
-        {filtered.map(q => (
-          <div key={q.id} className="break-inside-avoid bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative group">
-            <div className="text-4xl font-serif text-[#00369b]/20 absolute top-4 left-4 group-hover:text-[#00369b]/40 transition-colors">"</div>
-            <p className="text-slate-700 text-sm leading-relaxed relative z-10 pt-4 pb-6 font-medium">{q.text}</p>
+        {paginated.map(q => (
+          <div key={q.id} className="break-inside-avoid bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 relative group flex flex-col h-full min-h-[160px]">
+            <div className="text-6xl leading-none font-serif text-[#00369b] font-bold">"</div>
+            <p className="text-slate-700 text-[15px] leading-relaxed relative z-10 pb-6 font-medium mt-[-10px]">{q.text}</p>
             <div className="flex items-center justify-between mt-auto">
-              <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${TAG_COLORS[q.tag]}`}>
-                {q.tag}
+              <span className={`px-3 py-1.5 rounded-lg text-[11px] font-bold ${TAG_COLORS[q.tag]}`}>
+                {TAG_ICONS[q.tag] || "❖"} {q.tag}
               </span>
-              <span className="text-slate-300 text-xs font-mono">#{q.id.toString().padStart(2, '0')}</span>
+              <span className="text-slate-400 text-xs font-mono font-medium">#{q.id.toString().padStart(2, '0')}</span>
             </div>
           </div>
         ))}
-        {filtered.length === 0 && (
-          <div className="col-span-full py-10 text-center text-slate-400">Không tìm thấy câu trả lời nào phù hợp.</div>
+        {paginated.length === 0 && (
+          <div className="col-span-full py-12 text-center text-slate-400 bg-white/50 rounded-2xl border border-dashed border-slate-300">Không tìm thấy câu trả lời nào phù hợp.</div>
         )}
       </div>
+      
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 pt-4">
+          <button 
+            disabled={page === 1} 
+            onClick={() => setPage(p => p - 1)}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+          </button>
+          
+          {Array.from({ length: totalPages }).map((_, i) => {
+            const p = i + 1;
+            if (p === 1 || p === totalPages || (p >= page - 1 && p <= page + 1)) {
+              return (
+                <button 
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.04)] ${page === p ? 'bg-[#00369b] text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+                >
+                  {p}
+                </button>
+              );
+            } else if (p === page - 2 || p === page + 2) {
+              return <span key={p} className="text-slate-400 tracking-widest px-1">...</span>;
+            }
+            return null;
+          })}
+
+          <button 
+            disabled={page === totalPages} 
+            onClick={() => setPage(p => p + 1)}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -460,7 +538,7 @@ export const Dashboard = () => {
           </div>
 
           {/* ── Open Ended Quotes ──────────────────────────────────────────────── */}
-          <QuotesGrid quotes={p65Quotes} />
+          <QuotesGrid quotes={p65Quotes} questionText={qText("p6_5")} />
 
           {/* Footer */}
           <div className="text-center text-xs text-slate-400 pb-4">
