@@ -24,6 +24,14 @@ const agg = (data: any[], key: string) => {
       // Backward compatibility for old data that had commas inside the label
       val = val.replace("Tiện lợi, thanh toán nhanh mượt", "Tiện lợi và thanh toán nhanh mượt");
       val = val.replace("chia nhỏ khoản tiền, không bị", "chia nhỏ khoản tiền và không bị");
+      val = val.replace("bạn bè,...", "bạn bè...");
+      val = val.replace("Threads, X,...", "Threads, X...");
+      val = val.replace("Bài viết dài, phân tích", "Bài viết dài và phân tích");
+      val = val.replace("thảo luận, bình luận và", "thảo luận và bình luận");
+      val = val.replace("hài hước, châm biếm", "hài hước và châm biếm");
+      val = val.replace("dễ đọc, dễ theo", "dễ đọc và dễ theo");
+      val = val.replace("bắt trend, cập nhật", "bắt trend và cập nhật");
+      val = val.replace("tương tác, ví dụ", "tương tác (ví dụ");
       
       if (val.includes(",")) {
         val.split(",").forEach((v: string) => { const t = v.trim(); if (t) counts[t] = (counts[t] || 0) + 1; });
