@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { WEBHOOK_URL } from "../hooks/useSurveyForm";
+import { questions } from "../data/questions";
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 const PALETTE = ["#00369b", "#ff914d", "#3b82f6", "#f97316", "#8b5cf6", "#10b981", "#ec4899", "#06b6d4", "#f59e0b", "#ef4444"];
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const qText = (id: string) => questions.find(q => q.id === id)?.text || id;
+const rText = (qId: string, rId: string) => {
+  const q = questions.find(q => q.id === qId);
+  if (q && q.type === "matrix") return q.rows.find(r => r.id === rId)?.label || rId;
+  return rId;
+};
 
 // ─── Aggregator ───────────────────────────────────────────────────────────────
 const agg = (data: any[], key: string) => {
@@ -17,9 +26,8 @@ const agg = (data: any[], key: string) => {
   return Object.entries(counts).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
 };
 
-const avgScale = (data: any[], keys: string[], max: number = 7) =>
-  keys.map(key => {
-    const label = key.split(" - ").pop() || key;
+const avgScale = (data: any[], mappings: { key: string, label: string }[], max: number = 7) =>
+  mappings.map(({ key, label }) => {
     const vals = data.map(r => Number(r[key])).filter(v => !isNaN(v) && v > 0);
     const dist = Array(max).fill(0);
     vals.forEach(v => {
@@ -283,13 +291,44 @@ export const Dashboard = () => {
   const n = rawData.length;
 
   // ─── Derived ──────────────────────────────────────────────────────────────
-  const attAvg = avgScale(rawData, ["P4.1. ATT1 - Cân nhắc BNPL có lợi", "P4.1. ATT2 - Kiểm tra CP là đúng đắn", "P4.1. ATT3 - Thái độ tích cực với cân nhắc"]);
-  const pbcAvg = avgScale(rawData, ["P4.2. PBC1 - Có khả năng cân nhắc", "P4.2. PBC2 - Tự tin kiểm tra CP", "P4.2. PBC3 - Hoàn toàn do tôi kiểm soát"]);
-  const snAvg  = avgScale(rawData, ["P4.3. SN1 - Gia đình khuyến khích cân nhắc", "P4.3. SN2 - Bạn bè mong muốn cân nhắc", "P4.3. SN3 - Người xung quanh khuyến khích", "P4.3. SN4 - Người thân đều cân nhắc"]);
-  const intAvg = avgScale(rawData, ["P4.5. INT1 - Có ý định cân nhắc kỹ", "P4.5. INT2 - Dự định kiểm tra CP trước khi mua", "P4.5. INT3 - Chủ động cân nhắc trong tương lai"]);
-  const p63Avg = avgScale(rawData, ["P6.3. Đánh giá - Hài hước", "P6.3. Đánh giá - Gây thích thú", "P6.3. Đánh giá - Nhàm chán", "P6.3. Đánh giá - Gây khó chịu"]);
-  const p66Avg = avgScale(rawData, ["P6.6. Nhận ra thông điệp", "P6.6. Liên hệ chi tiết với TĐ", "P6.6. Hiểu cách truyền tải TĐ"]);
-  const p68Avg = avgScale(rawData, ["P6.8. TĐ rõ ràng", "P6.8. TĐ có ý nghĩa", "P6.8. TĐ đáng ghi nhớ", "P6.8. TĐ dễ nhớ"], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
+  const attAvg = avgScale(rawData, [
+    { key: "P4.1. ATT1 - Cân nhắc BNPL có lợi", label: rText("p4_1", "ATT1") },
+    { key: "P4.1. ATT2 - Kiểm tra CP là đúng đắn", label: rText("p4_1", "ATT2") },
+    { key: "P4.1. ATT3 - Thái độ tích cực với cân nhắc", label: rText("p4_1", "ATT3") }
+  ]);
+  const pbcAvg = avgScale(rawData, [
+    { key: "P4.2. PBC1 - Có khả năng cân nhắc", label: rText("p4_2", "PBC1") },
+    { key: "P4.2. PBC2 - Tự tin kiểm tra CP", label: rText("p4_2", "PBC2") },
+    { key: "P4.2. PBC3 - Hoàn toàn do tôi kiểm soát", label: rText("p4_2", "PBC3") }
+  ]);
+  const snAvg  = avgScale(rawData, [
+    { key: "P4.3. SN1 - Gia đình khuyến khích cân nhắc", label: rText("p4_3", "SN1") },
+    { key: "P4.3. SN2 - Bạn bè mong muốn cân nhắc", label: rText("p4_3", "SN2") },
+    { key: "P4.3. SN3 - Người xung quanh khuyến khích", label: rText("p4_3", "SN3") },
+    { key: "P4.3. SN4 - Người thân đều cân nhắc", label: rText("p4_3", "SN4") }
+  ]);
+  const intAvg = avgScale(rawData, [
+    { key: "P4.5. INT1 - Có ý định cân nhắc kỹ", label: rText("p4_5", "INT1") },
+    { key: "P4.5. INT2 - Dự định kiểm tra CP trước khi mua", label: rText("p4_5", "INT2") },
+    { key: "P4.5. INT3 - Chủ động cân nhắc trong tương lai", label: rText("p4_5", "INT3") }
+  ]);
+  const p63Avg = avgScale(rawData, [
+    { key: "P6.3. Đánh giá - Hài hước", label: rText("p6_3", "haihuoc") },
+    { key: "P6.3. Đánh giá - Gây thích thú", label: rText("p6_3", "thichthu") },
+    { key: "P6.3. Đánh giá - Nhàm chán", label: rText("p6_3", "nhamchan") },
+    { key: "P6.3. Đánh giá - Gây khó chịu", label: rText("p6_3", "khochiu") }
+  ]);
+  const p66Avg = avgScale(rawData, [
+    { key: "P6.6. Nhận ra thông điệp", label: rText("p6_6", "nhanra") },
+    { key: "P6.6. Liên hệ chi tiết với TĐ", label: rText("p6_6", "lienhe") },
+    { key: "P6.6. Hiểu cách truyền tải TĐ", label: rText("p6_6", "hieucach") }
+  ]);
+  const p68Avg = avgScale(rawData, [
+    { key: "P6.8. TĐ rõ ràng", label: rText("p6_8", "rorang") },
+    { key: "P6.8. TĐ có ý nghĩa", label: rText("p6_8", "ynghia") },
+    { key: "P6.8. TĐ đáng ghi nhớ", label: rText("p6_8", "ghinho") },
+    { key: "P6.8. TĐ dễ nhớ", label: rText("p6_8", "denho") }
+  ], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
 
   const p65Quotes = rawData
     .map(r => r["P6.5. Theo cách hiểu của bạn, nội dung trên đang muốn truyền tải hoặc phê phán điều gì?"])
@@ -346,69 +385,77 @@ export const Dashboard = () => {
           {/* ── P1: Thông tin người tham gia ─────────────────────────────────── */}
           <Section>Phần 1 · Thông tin người tham gia</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Độ tuổi" subtitle="Câu sàng lọc 1"><DonutChart data={agg(rawData, "1. Độ tuổi")} /></Card>
-            <Card title="Nơi sinh sống" subtitle="Câu sàng lọc 2"><DonutChart data={agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?").length ? agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?") : (agg(rawData, "2. Nơi sinh sống").length ? agg(rawData, "2. Nơi sinh sống") : agg(rawData, "scr_2"))} /></Card>
-            <Card title="Đã từng dùng BNPL chưa?" subtitle="Câu sàng lọc 3" span2><HorizBar total={n} data={agg(rawData, "3. Đã từng dùng BNPL chưa?").length ? agg(rawData, "3. Đã từng dùng BNPL chưa?") : (agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?").length ? agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?") : agg(rawData, "scr_3"))} /></Card>
-            <Card title="Giới tính" subtitle="P1.1"><DonutChart data={agg(rawData, "P1.1. Giới tính")} /></Card>
-            <Card title="Tình trạng hiện tại" subtitle="P1.2"><HorizBar total={n} data={agg(rawData, "P1.2. Tình trạng hiện tại")} /></Card>
-            <Card title="Thu nhập trung bình / tháng" subtitle="P1.3"><HorizBar total={n} data={agg(rawData, "P1.3. Mức thu nhập TB/tháng")} /></Card>
-            <Card title="Chi tiêu trung bình / tháng" subtitle="P1.4" span2><HorizBar total={n} data={agg(rawData, "P1.4. Mức chi tiêu TB/tháng")} /></Card>
+            <Card title={qText("scr_1")} subtitle="Câu sàng lọc 1"><DonutChart data={agg(rawData, "1. Độ tuổi")} /></Card>
+            <Card title={qText("scr_2")} subtitle="Câu sàng lọc 2"><DonutChart data={agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?").length ? agg(rawData, "2. Bạn hiện đang sinh sống tại đâu?") : (agg(rawData, "2. Nơi sinh sống").length ? agg(rawData, "2. Nơi sinh sống") : agg(rawData, "scr_2"))} /></Card>
+            <Card title={qText("scr_3")} subtitle="Câu sàng lọc 3" span2><HorizBar total={n} data={agg(rawData, "3. Đã từng dùng BNPL chưa?").length ? agg(rawData, "3. Đã từng dùng BNPL chưa?") : (agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?").length ? agg(rawData, "3. Bạn đã từng hoặc đang sử dụng dịch vụ Mua trước - Trả sau (BNPL - ví dụ: Shopee SPayLater, MoMo Ví trả sau, Fundiin...) hay chưa?") : agg(rawData, "scr_3"))} /></Card>
+            <Card title={qText("p1_1")} subtitle="P1.1"><DonutChart data={agg(rawData, "P1.1. Giới tính")} /></Card>
+            <Card title={qText("p1_2")} subtitle="P1.2"><HorizBar total={n} data={agg(rawData, "P1.2. Tình trạng hiện tại")} /></Card>
+            <Card title={qText("p1_3")} subtitle="P1.3"><HorizBar total={n} data={agg(rawData, "P1.3. Mức thu nhập TB/tháng")} /></Card>
+            <Card title={qText("p1_4")} subtitle="P1.4" span2><HorizBar total={n} data={agg(rawData, "P1.4. Mức chi tiêu TB/tháng")} /></Card>
           </div>
 
           {/* ── P2: Hành vi BNPL ─────────────────────────────────────────────── */}
           <Section>Phần 2 · Hành vi sử dụng BNPL</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Tần suất chốt đơn BNPL" subtitle="P2.2"><DonutChart data={agg(rawData, "P2.2. Tần suất chốt đơn BNPL")} /></Card>
-            <Card title="Tổng giá trị mua / tháng" subtitle="P2.3"><DonutChart data={agg(rawData, "P2.3. Tổng giá trị mua/tháng bằng BNPL")} /></Card>
-            <Card title="Loại SP/DV mua bằng BNPL" subtitle="P2.1 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
-            <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
-            <Card title="Thông tin thường kiểm tra khi dùng BNPL" subtitle="P2.5 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.5. Thông tin kiểm tra khi dùng BNPL")} /></Card>
+            <Card title={qText("p2_2")} subtitle="P2.2"><DonutChart data={agg(rawData, "P2.2. Tần suất chốt đơn BNPL")} /></Card>
+            <Card title={qText("p2_3")} subtitle="P2.3"><DonutChart data={agg(rawData, "P2.3. Tổng giá trị mua/tháng bằng BNPL")} /></Card>
+            <Card title={qText("p2_1")} subtitle="P2.1 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
+            <Card title={qText("p2_4")} subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
+            <Card title={qText("p2_5")} subtitle="P2.5 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.5. Thông kiểm tra khi dùng BNPL").length ? agg(rawData, "P2.5. Thông kiểm tra khi dùng BNPL") : agg(rawData, "P2.5. Thông tin kiểm tra khi dùng BNPL")} /></Card>
           </div>
 
           {/* ── P3: Trải nghiệm & Cảm xúc ──────────────────────────────────────── */}
           <Section>Phần 3 · Nhận thức và trải nghiệm khi sử dụng BNPL</Section>
           <div className="grid grid-cols-1 gap-5">
-            <Card title="Các tình trạng thường gặp" subtitle="P3.1 · Điểm TB thang 1–5">
+            <Card title={qText("p3_1")} subtitle="P3.1 · Điểm TB thang 1–5">
               <ScaleBar data={avgScale(rawData, [
-                "P3.1. Chốt đơn không có kế hoạch",
-                "P3.2. Mua đồ đắt dễ hơn vì chia nhỏ",
-                "P3.3. Quên/suýt quên ngày TT",
-                "P3.4. Cắt giảm chi tiêu để trả BNPL",
-                "P3.5. Áp lực khi đến kỳ trả",
-                "P3.6. Hối hận sau khi mua"
-              ], 5).map(d => ({ ...d, label: d.label.replace(/^P3\.\d\.\s*/, ''), avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
+                { key: "P3.1. Chốt đơn không có kế hoạch", label: rText("p3_1", "1") },
+                { key: "P3.2. Mua đồ đắt dễ hơn vì chia nhỏ", label: rText("p3_1", "2") },
+                { key: "P3.3. Quên/suýt quên ngày TT", label: rText("p3_1", "3") },
+                { key: "P3.4. Cắt giảm chi tiêu để trả BNPL", label: rText("p3_1", "4") },
+                { key: "P3.5. Áp lực khi đến kỳ trả", label: rText("p3_1", "5") },
+                { key: "P3.6. Hối hận sau khi mua", label: rText("p3_1", "6") }
+              ], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
             </Card>
           </div>
 
           {/* ── P4: Mô hình TPB ────────────────────────────────________________ */}
           <Section>Phần 4 · Mô hình TPB — Ý định cân nhắc BNPL</Section>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Thái độ (ATT)" subtitle="Điểm TB thang 1–7"><ScaleBar data={attAvg} /></Card>
-            <Card title="Kiểm soát hành vi (PBC)" subtitle="Điểm TB thang 1–7"><ScaleBar data={pbcAvg} /></Card>
-            <Card title="Chuẩn mực chủ quan (SN)" subtitle="Điểm TB thang 1–7"><ScaleBar data={snAvg} /></Card>
-            <Card title="Ý định hành vi (INT)" subtitle="Điểm TB thang 1–7"><ScaleBar data={intAvg} /></Card>
+            <Card title={qText("p4_1")} subtitle="Điểm TB thang 1–7"><ScaleBar data={attAvg} /></Card>
+            <Card title={qText("p4_2")} subtitle="Điểm TB thang 1–7"><ScaleBar data={pbcAvg} /></Card>
+            <Card title={qText("p4_3")} subtitle="Điểm TB thang 1–7"><ScaleBar data={snAvg} /></Card>
+            <Card title={qText("p4_5")} subtitle="Điểm TB thang 1–7"><ScaleBar data={intAvg} /></Card>
           </div>
 
           {/* ── P5: Truyền thông ──────────────────────────────────────────────── */}
           <Section>Phần 5 · Thói quen & kênh truyền thông</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Mạng xã hội hay dùng nhất" subtitle="P5.1"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.1. MXH hay dùng nhất")} /></Card>
-            <Card title="Buổi sử dụng MXH" subtitle="P5.2"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.2. Buổi dùng MXH trong ngày")} /></Card>
-            <Card title="Nội dung Facebook thu hút" subtitle="P5.5 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.5. Nội dung FB thu hút")} /></Card>
-            <Card title="Dạng video TikTok thu hút" subtitle="P5.6 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.6. Dạng video TikTok thu hút")} /></Card>
+            <Card title={qText("p5_1")} subtitle="P5.1"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.1. MXH hay dùng nhất")} /></Card>
+            <Card title={qText("p5_2")} subtitle="P5.2"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.2. Buổi dùng MXH trong ngày")} /></Card>
+            <Card title={qText("p5_5")} subtitle="P5.5 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.5. Nội dung FB thu hút")} /></Card>
+            <Card title={qText("p5_6")} subtitle="P5.6 · Đa lựa chọn" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.6. Dạng video TikTok thu hút")} /></Card>
           </div>
 
           {/* ── P6: Nhận thức ─────────────────────────────────────────────────── */}
           <Section>Phần 6 · Nhận thức trào phúng thị giác</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title="Đã nghe về 'trào phúng thị giác' chưa?" subtitle="P6.1"><HorizBar total={n} data={agg(rawData, "P6.1. Đã nghe 'trào phúng thị giác' chưa?")} /></Card>
-            <Card title="Ảnh hưởng đến nhận thức BNPL" subtitle="P6.7 · Điểm TB thang 1–7"><ScaleBar data={avgScale(rawData, ["P6.7. Quan tâm hơn đến BNPL cẩn thận", "P6.7. Chú ý rủi ro BNPL"])} /></Card>
-            <Card title="Đánh giá nội dung (P6.3)" subtitle="Điểm TB thang 1–7"><ScaleBar data={p63Avg} /></Card>
-            <Card title="Nhận thức thông điệp (P6.6)" subtitle="Điểm TB thang 1–7"><ScaleBar data={p66Avg} /></Card>
-            <Card title="Đánh giá thông điệp (P6.8)" subtitle="Điểm TB thang 1–5"><ScaleBar data={p68Avg} max={5} /></Card>
-            <Card title="Vai trò của hình ảnh (P6.10)" subtitle="Điểm TB thang 1–5">
-              <ScaleBar data={avgScale(rawData, ["P6.10. Hình thu hút chú ý", "P6.10. Hình giúp hiểu vấn đề", "P6.10. Hình làm nổi bật châm biếm"], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
+            <Card title={qText("p6_1")} subtitle="P6.1"><HorizBar total={n} data={agg(rawData, "P6.1. Đã nghe 'trào phúng thị giác' chưa?")} /></Card>
+            <Card title={qText("p6_7")} subtitle="P6.7 · Điểm TB thang 1–5">
+              <ScaleBar data={avgScale(rawData, [
+                { key: "P6.7. Quan tâm hơn đến BNPL cẩn thận", label: rText("p6_7", "quantam") },
+                { key: "P6.7. Chú ý rủi ro BNPL", label: rText("p6_7", "ruiro") }
+              ], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
+            </Card>
+            <Card title={qText("p6_3")} subtitle="Điểm TB thang 1–7"><ScaleBar data={p63Avg} /></Card>
+            <Card title={qText("p6_6")} subtitle="Điểm TB thang 1–7"><ScaleBar data={p66Avg} /></Card>
+            <Card title={qText("p6_8")} subtitle="Điểm TB thang 1–5"><ScaleBar data={p68Avg} max={5} /></Card>
+            <Card title={qText("p6_10")} subtitle="Điểm TB thang 1–7">
+              <ScaleBar data={avgScale(rawData, [
+                { key: "P6.10. Hình thu hút chú ý", label: rText("p6_10", "thuhut") },
+                { key: "P6.10. Hình giúp hiểu vấn đề", label: rText("p6_10", "hieu") },
+                { key: "P6.10. Hình làm nổi bật châm biếm", label: rText("p6_10", "noibat") }
+              ])} />
             </Card>
           </div>
 
