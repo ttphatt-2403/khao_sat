@@ -164,48 +164,12 @@ const ScaleBar = ({ data, max = 7 }: { data: { label: string; avg: number; dist?
 
 // ─── Open Ended Quotes Grid ───────────────────────────────────────────────────
 const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: string }) => {
-  const [filter, setFilter] = useState("Tất cả");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const getQuoteTag = (text: string) => {
-    const lower = text.toLowerCase();
-    if (lower.includes("cân nhắc") || lower.includes("suy nghĩ") || lower.includes("quản lý") || lower.includes("kiểm soát")) return "Cân nhắc chi tiêu";
-    if (lower.includes("áp lực") || lower.includes("trả nợ") || lower.includes("hóa đơn") || lower.includes("khoản vay") || lower.includes("tiền") || lower.includes("hậu quả")) return "Áp lực trả nợ";
-    if (lower.includes("tiện lợi") || lower.includes("dễ dàng") || lower.includes("nhanh") || lower.includes("hấp dẫn")) return "Sự tiện lợi";
-    if (lower.includes("mua sắm") || lower.includes("cám dỗ") || lower.includes("ham muốn")) return "Cám dỗ mua sắm";
-    return "Khác";
-  };
-
-  const TAG_COLORS: Record<string, string> = {
-    "Cân nhắc chi tiêu": "bg-blue-100 text-blue-600",
-    "Áp lực trả nợ": "bg-red-100 text-red-600",
-    "Sự tiện lợi": "bg-orange-100 text-orange-600",
-    "Cám dỗ mua sắm": "bg-purple-100 text-purple-600",
-    "Khác": "bg-slate-100 text-slate-600",
-  };
-
-  const TAG_ICONS: Record<string, string> = {
-    "Tất cả": "Tất cả", 
-    "Cân nhắc chi tiêu": "💡",
-    "Áp lực trả nợ": "🚨",
-    "Sự tiện lợi": "⚡",
-    "Cám dỗ mua sắm": "🛍️",
-    "Khác": "💭",
-  };
-
-  const processed = quotes.map((q, i) => ({ id: i + 1, text: q, tag: getQuoteTag(q) }));
-  
-  // Calculate counts for each tag
-  const tagCounts: Record<string, number> = { "Tất cả": processed.length };
-  processed.forEach(q => {
-    tagCounts[q.tag] = (tagCounts[q.tag] || 0) + 1;
-  });
-  
-  const tags = ["Tất cả", ...Array.from(new Set(processed.map(q => q.tag)))];
+  const processed = quotes.map((q, i) => ({ id: i + 1, text: q }));
 
   const filtered = processed.filter(q => 
-    (filter === "Tất cả" || q.tag === filter) &&
     q.text.toLowerCase().includes(search.toLowerCase())
   );
   
@@ -214,8 +178,8 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  // Reset page when filter/search changes
-  useEffect(() => setPage(1), [filter, search]);
+  // Reset page when search changes
+  useEffect(() => setPage(1), [search]);
 
   return (
     <div className="space-y-6 mt-8">
@@ -244,32 +208,14 @@ const QuotesGrid = ({ quotes, questionText }: { quotes: string[], questionText: 
           </div>
         </div>
       </div>
-      
-      {/* Tag Filter Pills */}
-      <div className="flex flex-wrap gap-2 items-center">
-        {tags.map(t => (
-          <button 
-            key={t}
-            onClick={() => setFilter(t)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${filter === t ? 'bg-white text-[#00369b] shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-200' : 'bg-white/50 text-slate-500 hover:bg-white hover:text-slate-700 border border-transparent'}`}
-          >
-            {t !== "Tất cả" && <span>{TAG_ICONS[t] || "❖"}</span>}
-            {t}
-            <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${filter === t ? 'bg-[#00369b]/10 text-[#00369b]' : 'bg-slate-200 text-slate-500'}`}>{tagCounts[t]}</span>
-          </button>
-        ))}
-      </div>
 
       {/* Masonry Grid */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5 mt-4">
         {paginated.map(q => (
           <div key={q.id} className="break-inside-avoid bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 relative group flex flex-col h-full min-h-[160px]">
             <div className="text-6xl leading-none font-serif text-[#00369b] font-bold">"</div>
             <p className="text-slate-700 text-[15px] leading-relaxed relative z-10 pb-6 font-medium mt-[-10px]">{q.text}</p>
-            <div className="flex items-center justify-between mt-auto">
-              <span className={`px-3 py-1.5 rounded-lg text-[11px] font-bold ${TAG_COLORS[q.tag]}`}>
-                {TAG_ICONS[q.tag] || "❖"} {q.tag}
-              </span>
+            <div className="flex items-center justify-end mt-auto">
               <span className="text-slate-400 text-xs font-mono font-medium">#{q.id.toString().padStart(2, '0')}</span>
             </div>
           </div>
