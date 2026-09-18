@@ -362,7 +362,22 @@ export const Dashboard = () => {
             <Card title="Tổng giá trị mua / tháng" subtitle="P2.3"><DonutChart data={agg(rawData, "P2.3. Tổng giá trị mua/tháng bằng BNPL")} /></Card>
             <Card title="Loại SP/DV mua bằng BNPL" subtitle="P2.1 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
             <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
-            <Card title="Thông tin thường kiểm tra khi dùng BNPL" subtitle="P2.5 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.5. Thông tin thường kiểm tra khi dùng BNPL")} /></Card>
+            <Card title="Thông tin thường kiểm tra khi dùng BNPL" subtitle="P2.5 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.5. Thông tin kiểm tra khi dùng BNPL")} /></Card>
+          </div>
+
+          {/* ── P3: Trải nghiệm & Cảm xúc ──────────────────────────────────────── */}
+          <Section>Phần 3 · Nhận thức và trải nghiệm khi sử dụng BNPL</Section>
+          <div className="grid grid-cols-1 gap-5">
+            <Card title="Các tình trạng thường gặp" subtitle="P3.1 · Điểm TB thang 1–5">
+              <ScaleBar data={avgScale(rawData, [
+                "P3.1. Chốt đơn không có kế hoạch",
+                "P3.2. Mua đồ đắt dễ hơn vì chia nhỏ",
+                "P3.3. Quên/suýt quên ngày TT",
+                "P3.4. Cắt giảm chi tiêu để trả BNPL",
+                "P3.5. Áp lực khi đến kỳ trả",
+                "P3.6. Hối hận sau khi mua"
+              ], 5).map(d => ({ ...d, label: d.label.replace(/^P3\.\d\.\s*/, ''), avg: +Math.min(d.avg, 5).toFixed(2) }))} max={5} />
+            </Card>
           </div>
 
           {/* ── P4: Mô hình TPB ────────────────────────────────________________ */}
