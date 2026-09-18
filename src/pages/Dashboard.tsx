@@ -362,6 +362,7 @@ export const Dashboard = () => {
             <Card title="Tổng giá trị mua / tháng" subtitle="P2.3"><DonutChart data={agg(rawData, "P2.3. Tổng giá trị mua/tháng bằng BNPL")} /></Card>
             <Card title="Loại SP/DV mua bằng BNPL" subtitle="P2.1 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.1. Loại SP/DV mua bằng BNPL")} /></Card>
             <Card title="Lý do chọn BNPL thay vì trả thẳng" subtitle="P2.4 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.4. Lý do chọn BNPL")} /></Card>
+            <Card title="Thông tin thường kiểm tra khi dùng BNPL" subtitle="P2.5 · Đa lựa chọn" span2><HorizBar total={n} data={agg(rawData, "P2.5. Thông tin thường kiểm tra khi dùng BNPL")} /></Card>
           </div>
 
           {/* ── P4: Mô hình TPB ────────────────────────────────________________ */}
