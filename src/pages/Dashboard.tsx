@@ -58,8 +58,8 @@ const DonutChart = ({ data }: { data: { name: string; value: number }[] }) => {
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#f1f5f9" strokeWidth={22} />
         {slices.map((s, i) => (
           <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={s.color} strokeWidth={20}
-            strokeDasharray={`${s.dash - 2} ${circ - s.dash + 2}`}
-            strokeDashoffset={circ / 4 - s.offset}
+            strokeDasharray={`${Math.max(0, s.dash - 2)} ${circ}`}
+            strokeDashoffset={-s.offset}
             transform={`rotate(-90 ${cx} ${cy})`} strokeLinecap="butt" />
         ))}
         <text x={cx} y={cy - 6} textAnchor="middle" className="font-bold" style={{ fill: "#00369b", fontSize: 24, fontFamily: "Be Vietnam Pro", fontWeight: 700 }}>{total}</text>
