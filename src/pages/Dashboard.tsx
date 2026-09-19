@@ -426,9 +426,9 @@ export const Dashboard = () => {
     { key: "P4.5. INT3", label: rText("p4_5", "INT3") }
   ]);
   const p44Avg = avgScale(rawData, [
-    { key: "POP1", label: rText("p4_4", "POP1") },
-    { key: "POP2", label: rText("p4_4", "POP2") },
-    { key: "POP3", label: rText("p4_4", "POP3") }
+    { key: "P4.4. POP1", label: rText("p4_4", "POP1") },
+    { key: "P4.4. POP2", label: rText("p4_4", "POP2") },
+    { key: "P4.4. POP3", label: rText("p4_4", "POP3") }
   ]);
   const p63Avg = avgScale(rawData, [
     { key: "P6.3. Đánh giá - Hài hước", label: rText("p6_3", "haihuoc") },
@@ -437,8 +437,8 @@ export const Dashboard = () => {
     { key: "P6.3. Đánh giá - Gây khó chịu", label: rText("p6_3", "khochiu") }
   ]);
   const p64Avg = avgScale(rawData, [
-    { key: "gây cười", label: rText("p6_4", "gaycuoi") },
-    { key: "thiên về giải trí", label: rText("p6_4", "giaitri") }
+    { key: "P6.4. Mục đích gây cười", label: rText("p6_4", "gaycuoi") },
+    { key: "P6.4. Thiên về giải trí", label: rText("p6_4", "giaitri") }
   ]);
   const p66Avg = avgScale(rawData, [
     { key: "P6.6. Nhận ra thông điệp", label: rText("p6_6", "nhanra") },
@@ -453,11 +453,11 @@ export const Dashboard = () => {
   ], 5).map(d => ({ ...d, avg: +Math.min(d.avg, 5).toFixed(2) }));
   
   const p69Avg = avgScale(rawData, [
-    { key: "Phần chữ giúp", label: rText("p6_9", "hieu") },
-    { key: "làm nổi bật", label: rText("p6_9", "noibat") },
-    { key: "tính hài hước", label: rText("p6_9", "haihuoc") },
-    { key: "chữ thu hút", label: rText("p6_9", "thuhut") },
-    { key: "dễ đọc", label: rText("p6_9", "dedoc") }
+    { key: "P6.9. Chữ giúp hiểu nội dung", label: rText("p6_9", "hieu") },
+    { key: "P6.9. Chữ làm nổi bật TĐ", label: rText("p6_9", "noibat") },
+    { key: "P6.9. Chữ tạo hài hước", label: rText("p6_9", "haihuoc") },
+    { key: "P6.9. Chữ thu hút chú ý", label: rText("p6_9", "thuhut") },
+    { key: "P6.9. Chữ dễ đọc dễ hiểu", label: rText("p6_9", "dedoc") }
   ]);
 
   const p65Quotes = rawData
