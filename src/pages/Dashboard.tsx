@@ -48,6 +48,10 @@ const agg = (data: any[], key: string) => {
       val = val.replaceAll("Mạng xã hội (Facebook, TikTok, Instagram, Youtube, Threads, X...)", "Mạng xã hội (Facebook - TikTok - Instagram - Youtube - Threads - X...)");
       val = val.replaceAll("Cộng đồng online (group Facebook, forum, Threads...)", "Cộng đồng online (group Facebook - forum - Threads...)");
       val = val.replaceAll("Không chủ động tìm, chỉ tình cờ thấy khi lướt mạng xã hội", "Không chủ động tìm và chỉ tình cờ thấy khi lướt mạng xã hội");
+      
+      // Fix P6.2 commas
+      val = val.replaceAll("Nội dung hình ảnh sử dụng sự hài hước, châm biếm hoặc mỉa mai để thể hiện góc nhìn, bình luận hoặc phê phán một vấn đề.", "Nội dung hình ảnh sử dụng sự hài hước và châm biếm hoặc mỉa mai để thể hiện góc nhìn và bình luận hoặc phê phán một vấn đề.");
+      val = val.replaceAll("Nội dung hình ảnh sử dụng hình ảnh, màu sắc và bố cục để thu hút người xem.", "Nội dung hình ảnh sử dụng hình ảnh và màu sắc và bố cục để thu hút người xem.");
 
       if (val.includes(",")) {
         val.split(",").forEach((v: string) => { const t = v.trim(); if (t) counts[t] = (counts[t] || 0) + 1; });
