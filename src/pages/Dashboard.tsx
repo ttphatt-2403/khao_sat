@@ -17,7 +17,8 @@ const rText = (qId: string, rId: string) => {
 const agg = (data: any[], key: string) => {
   const counts: Record<string, number> = {};
   data.forEach(r => {
-    let val = r[key];
+    const actualKey = Object.keys(r).find(k => k.toLowerCase().includes(key.toLowerCase()));
+    let val = actualKey ? r[actualKey] : undefined;
     if (!val || val === "") return;
     
     if (typeof val === "string") {
@@ -46,7 +47,10 @@ const agg = (data: any[], key: string) => {
 
 const avgScale = (data: any[], mappings: { key: string, label: string }[], max: number = 7) =>
   mappings.map(({ key, label }) => {
-    const vals = data.map(r => Number(r[key])).filter(v => !isNaN(v) && v > 0);
+    const vals = data.map(r => {
+      const actualKey = Object.keys(r).find(k => k.toLowerCase().includes(key.toLowerCase()));
+      return actualKey ? Number(r[actualKey]) : NaN;
+    }).filter(v => !isNaN(v) && v > 0);
     const dist = Array(max).fill(0);
     vals.forEach(v => {
       const idx = Math.round(v) - 1;
