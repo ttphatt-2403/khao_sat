@@ -161,7 +161,7 @@ const ScaleBar = ({ data, max = 5 }: { data: { label: string; avg: number; dist?
           </div>
           
           {/* Bar Chart Distribution */}
-          <div className="h-56 mt-4 flex items-end gap-1 relative px-8 pb-6 border-b border-l border-slate-200 ml-8">
+          <div className="h-56 mt-12 flex items-end gap-1 relative px-8 pb-6 border-b border-l border-slate-200 ml-8">
             {/* Y Axis pseudo labels (simple implementation) */}
             <div className="absolute -left-8 bottom-6 text-[10px] text-slate-400">0</div>
             <div className="absolute -left-8 top-0 text-[10px] text-slate-400">{Math.max(...(d.dist || [0]), 10)}</div>
