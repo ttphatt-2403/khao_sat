@@ -224,7 +224,7 @@ export const questions: Question[] = [
     rows: [
       { id: "ATT1", label: "Tôi cho rằng cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL là điều có lợi cho bản thân." },
       { id: "ATT2", label: "Tôi cho rằng cân nhắc tổng chi phí, khả năng chi trả và nghĩa vụ thanh toán trước khi sử dụng BNPL là một quyết định đúng đắn." },
-      { id: "ATT3", label: "Tôi cho rằng cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL là điều cần thiết." },
+      { id: "ATT3", label: "Tôi có thái độ tích cực đối với việc cân nhắc kỹ trước khi quyết định chi tiêu bằng BNPL." },
     ],
   },
   {
