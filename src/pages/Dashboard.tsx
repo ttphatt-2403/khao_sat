@@ -34,6 +34,21 @@ const agg = (data: any[], key: string) => {
       val = val.replace("bắt trend, cập nhật", "bắt trend và cập nhật");
       val = val.replace("tương tác, ví dụ", "tương tác (ví dụ");
       
+      // Fix P5.3 and P5.4 commas
+      val = val.replaceAll("Lướt xem cho vui, giải trí", "Lướt xem cho vui và giải trí");
+      val = val.replaceAll("Xem video, clip ngắn", "Xem video và clip ngắn");
+      val = val.replaceAll("Đọc tin tức, cập nhật xu hướng", "Đọc tin tức và cập nhật xu hướng");
+      val = val.replaceAll("Tìm hiểu thông tin về sản phẩm, dịch vụ (mua sắm, tài chính, công nghệ...)", "Tìm hiểu thông tin về sản phẩm và dịch vụ (mua sắm - tài chính - công nghệ...)");
+      val = val.replaceAll("Theo dõi người nổi tiếng, KOL, creator", "Theo dõi người nổi tiếng - KOL - creator");
+      val = val.replaceAll("Nhắn tin, gọi điện với bạn bè, người thân", "Nhắn tin và gọi điện với bạn bè - người thân");
+      val = val.replaceAll("Đăng bài, chia sẻ trạng thái cá nhân", "Đăng bài và chia sẻ trạng thái cá nhân");
+      val = val.replaceAll("Tham gia nhóm, cộng đồng theo sở thích", "Tham gia nhóm và cộng đồng theo sở thích");
+      val = val.replaceAll("Làm việc, học tập online", "Làm việc và học tập online");
+      val = val.replaceAll("Truyền miệng từ gia đình, người thân, bạn bè...", "Truyền miệng từ gia đình - người thân - bạn bè...");
+      val = val.replaceAll("Mạng xã hội (Facebook, TikTok, Instagram, Youtube, Threads, X...)", "Mạng xã hội (Facebook - TikTok - Instagram - Youtube - Threads - X...)");
+      val = val.replaceAll("Cộng đồng online (group Facebook, forum, Threads...)", "Cộng đồng online (group Facebook - forum - Threads...)");
+      val = val.replaceAll("Không chủ động tìm, chỉ tình cờ thấy khi lướt mạng xã hội", "Không chủ động tìm và chỉ tình cờ thấy khi lướt mạng xã hội");
+
       if (val.includes(",")) {
         val.split(",").forEach((v: string) => { const t = v.trim(); if (t) counts[t] = (counts[t] || 0) + 1; });
         return;
