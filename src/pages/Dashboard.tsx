@@ -565,13 +565,13 @@ export const Dashboard = () => {
           {/* ── P5: Truyền thông ──────────────────────────────────────────────── */}
           <Section>Phần 5 · Thói quen & kênh truyền thông</Section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Card title={qText("p5_1")} subtitle="P5.1"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.1. MXH hay dùng nhất")} /></Card>
-            <Card title={qText("p5_2")} subtitle="P5.2"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.2. Buổi dùng MXH trong ngày")} /></Card>
-            <Card title={qText("p5_3")} subtitle="P5.3 · Đa lựa chọn (chọn nhiều đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "Khi sử dụng mạng xã hội")} /></Card>
-            <Card title={qText("p5_4")} subtitle="P5.4 · Đa lựa chọn (chọn nhiều đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "tiếp cận thông tin về Mua trước")} /></Card>
-            <Card title={qText("p5_5")} subtitle="P5.5 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.5. Nội dung FB thu hút")} /></Card>
-            <Card title={qText("p5_6")} subtitle="P5.6 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.6. Dạng video TikTok thu hút")} /></Card>
-            <Card title={qText("p5_7")} subtitle="P5.7 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "trên Threads, nội dung nào sẽ thu hút")} /></Card>
+            <Card title={qText("p5_1")} subtitle="P5.1"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.1")} /></Card>
+            <Card title={qText("p5_2")} subtitle="P5.2"><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.2")} /></Card>
+            <Card title={qText("p5_3")} subtitle="P5.3 · Đa lựa chọn (chọn nhiều đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.3")} /></Card>
+            <Card title={qText("p5_4")} subtitle="P5.4 · Đa lựa chọn (chọn nhiều đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.4")} /></Card>
+            <Card title={qText("p5_5")} subtitle="P5.5 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.5")} /></Card>
+            <Card title={qText("p5_6")} subtitle="P5.6 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.6")} /></Card>
+            <Card title={qText("p5_7")} subtitle="P5.7 · Đa lựa chọn (chọn tối đa 3 đáp án)" span2><HorizBar total={bnplUsedYesCount} data={agg(rawData, "P5.7")} /></Card>
           </div>
 
           {/* ── P6: Nhận thức ─────────────────────────────────────────────────── */}
