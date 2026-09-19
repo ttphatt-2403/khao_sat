@@ -125,37 +125,67 @@ const HorizBar = ({ data, max: maxProp, total }: { data: { name: string; value: 
   );
 };
 
-// ─── Scale progress bars ──────────────────────────────────────────────────────
-const ScaleBar = ({ data, max = 7 }: { data: { label: string; avg: number; dist?: number[]; total?: number }[]; max?: number }) => {
+// ─── Detailed Rating Chart (Google Forms Style) ───────────────────────────────
+const ScaleBar = ({ data, max = 5 }: { data: { label: string; avg: number; dist?: number[]; total?: number }[]; max?: number }) => {
   if (data.length === 0) return <NoData />;
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {data.map((d, i) => (
-        <div key={i} className="space-y-1">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-500 w-44 sm:w-48 shrink-0 leading-tight">{d.label}</span>
-            <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
-              <div className="h-full rounded-full flex items-center justify-end pr-2 transition-all duration-700"
-                style={{ width: `${(d.avg / max) * 100}%`, background: i % 2 === 0 ? "#00369b" : "#ff914d", minWidth: d.avg > 0 ? 28 : 0 }}>
-                <span className="text-white text-[10px] font-bold">{d.avg}</span>
-              </div>
-            </div>
-            <span className="text-xs font-bold w-8 text-right text-slate-400">/{max}</span>
+        <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+          <div className="font-medium text-slate-800 text-sm mb-6 pb-4 border-b border-slate-50 flex items-center justify-between">
+            <span>{d.label}</span>
+            <span className="text-xs text-slate-400 font-normal">{d.total} responses</span>
           </div>
-          {d.dist && d.total ? (
-            <div className="flex items-end gap-1 pl-[188px] sm:pl-[204px] pr-11 h-8">
-              {d.dist.map((count, idx) => (
-                <div key={idx} className="flex-1 flex flex-col items-center justify-end group relative h-full">
-                  <div className="w-full bg-slate-200 group-hover:bg-slate-300 rounded-t-sm transition-colors" 
-                       style={{ height: `${(count / Math.max(...d.dist!, 1)) * 100}%`, minHeight: count > 0 ? '2px' : 0 }} />
-                  <div className="text-[8px] text-slate-400 mt-0.5 leading-none">{idx + 1}</div>
-                  <div className="opacity-0 group-hover:opacity-100 absolute -top-6 bg-slate-800 text-white text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none transition-opacity">
-                    {count} lượt ({Math.round(count/d.total!*100)}%)
+          
+          {/* Average Rating with Stars */}
+          <div className="flex flex-col items-center mb-10">
+            <div className="text-[13px] font-bold text-slate-800 mb-2">Average rating ({d.avg})</div>
+            <div className="flex gap-4 text-3xl">
+              {Array.from({ length: max }).map((_, idx) => {
+                const fill = Math.min(Math.max(d.avg - idx, 0), 1);
+                return (
+                  <div key={idx} className="relative flex flex-col items-center gap-1">
+                    <span className="text-xs text-slate-500 font-medium absolute -top-4">{idx + 1}</span>
+                    <div className="relative leading-none">
+                      <span className="text-slate-200">★</span>
+                      <span className="absolute top-0 left-0 overflow-hidden text-amber-400" style={{ width: `${fill * 100}%` }}>★</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
-          ) : null}
+          </div>
+          
+          {/* Bar Chart Distribution */}
+          <div className="h-56 mt-4 flex items-end gap-1 relative px-8 pb-6 border-b border-l border-slate-200 ml-8">
+            {/* Y Axis pseudo labels (simple implementation) */}
+            <div className="absolute -left-8 bottom-6 text-[10px] text-slate-400">0</div>
+            <div className="absolute -left-8 top-0 text-[10px] text-slate-400">{Math.max(...(d.dist || [0]), 10)}</div>
+            
+            {d.dist?.map((count, idx) => {
+              const maxDist = Math.max(...d.dist!, 1);
+              const heightPct = (count / maxDist) * 100;
+              const pct = d.total ? ((count / d.total) * 100).toFixed(1) : "0";
+              return (
+                <div key={idx} className="flex-1 flex flex-col items-center justify-end h-full relative group">
+                  {/* Bar */}
+                  <div 
+                    className="w-4/5 bg-[#13c2c2] transition-all duration-700 relative flex items-end justify-center"
+                    style={{ height: `${heightPct}%`, minHeight: count > 0 ? '2px' : '0' }}
+                  >
+                    {/* Label on top of bar */}
+                    {count > 0 && (
+                      <span className="absolute -top-5 text-[9px] text-slate-600 whitespace-nowrap">
+                        {count} ({pct}%)
+                      </span>
+                    )}
+                  </div>
+                  {/* X Axis Label */}
+                  <div className="absolute -bottom-6 text-xs text-slate-500">{idx + 1}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ))}
     </div>
